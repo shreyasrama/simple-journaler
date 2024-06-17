@@ -21,13 +21,4 @@ export default defineConfig({
 	optimizeDeps: {
 		exclude: ['sqlocal'],
 	},
-	
-	// Localhost as HTTPS
-	server: {
-		https: {
-            key: fs.readFileSync(`${__dirname}/cert/key.pem`),
-            cert: fs.readFileSync(`${__dirname}/cert/cert.pem`)
-        },
-        proxy: {}
-	}
 });

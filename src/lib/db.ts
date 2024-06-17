@@ -1,12 +1,17 @@
-import { SQLocal } from 'sqlocal';
-import { drizzle } from 'drizzle-orm/sqlite-proxy';
-import { SQLocalDrizzle } from 'sqlocal/drizzle';
+import { Kysely, type Migration, Migrator } from 'kysely';
+import { SQLocalKysely } from 'sqlocal/kysely';
 
-const { sql } = new SQLocal('database.sqlite3');
-const { driver, batchDriver } = new SQLocalDrizzle('database.sqlite3');
+const { dialect } = new SQLocalKysely('database.sqlite3');
 
-export const db = drizzle(driver, batchDriver);
+export const db = new Kysely<any>({ dialect });
 
-export async function InitDB() {
-    await sql`CREATE TABLE groceries (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)`;
-}
+export const migrator = new Migrator({
+	db,
+	provider: {
+		async getMigrations() {
+			const { initMigrations } = await import('$lib/migrations');
+
+			return initMigrations;
+		},
+	},
+});

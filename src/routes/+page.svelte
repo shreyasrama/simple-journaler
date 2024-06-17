@@ -1,19 +1,26 @@
 <script lang="ts">
-    import { db, InitDB } from '$lib/db'
-    import { groceries } from '$lib/schema';
+    import { db } from '$lib/db'
+    import { migrator } from '$lib/db'
 
     test();
 
     async function test() {
-        try {
-            const data = await db
-                .select({ name: groceries.name, id: groceries.id })
-                .from(groceries)
-                .orderBy(groceries.name)
-                .all();
-            console.log(data);
-        } catch(error) {
-            InitDB();
+        await migrator.migrateToLatest();
+
+        // check if db is empty
+        const res = await db
+            .selectFrom('users')
+            .select([
+                b => b.fn.count('users.id').as('count')
+            ])
+            .execute();
+        
+        console.log(res);
+
+        if (res[0].count == 0) {
+            //
+        } else {
+            //
         }
     }
 </script>

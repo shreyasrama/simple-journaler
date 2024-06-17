@@ -22,4 +22,3 @@ vite.config.ts.timestamp-*
 
 # Database
 *.sqlite3
-/drizzle
