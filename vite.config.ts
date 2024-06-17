@@ -1,6 +1,33 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import fs from 'fs';
 
 export default defineConfig({
-	plugins: [sveltekit()]
+	plugins: [
+		sveltekit(),
+		
+		// Required for cross-origin isolation and origin private file system (OPFS)
+		{
+			name: 'configure-response-headers',
+			configureServer: (server) => {
+			  server.middlewares.use((_req, res, next) => {
+			  	res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+				res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+				next();
+			  });
+			},
+		},
+	],
+	optimizeDeps: {
+		exclude: ['sqlocal'],
+	},
+	
+	// Localhost as HTTPS
+	server: {
+		https: {
+            key: fs.readFileSync(`${__dirname}/cert/key.pem`),
+            cert: fs.readFileSync(`${__dirname}/cert/cert.pem`)
+        },
+        proxy: {}
+	}
 });
