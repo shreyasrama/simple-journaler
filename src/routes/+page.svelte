@@ -1,29 +1,34 @@
 <script lang="ts">
-    import { db } from '$lib/db'
-    import { migrator } from '$lib/db'
+	import Welcome from '$lib/components/Welcome/Welcome.svelte';
 
-    test();
+	import { db } from '$lib/db';
+	import { migrator } from '$lib/db';
 
-    async function test() {
-        await migrator.migrateToLatest();
+	let isDatabaseEmpty: boolean;
 
-        // check if db is empty
-        const res = await db
-            .selectFrom('users')
-            .select([
-                b => b.fn.count('users.id').as('count')
-            ])
-            .execute();
-        
-        console.log(res);
+	init();
 
-        if (res[0].count == 0) {
-            //
-        } else {
-            //
-        }
-    }
+	async function init() {
+		await migrator.migrateToLatest();
+
+		// check if db is empty
+		const res = await db
+			.selectFrom('users')
+			.select([(b) => b.fn.count('users.id').as('count')])
+			.execute();
+
+		if (res[0].count == 0) {
+			isDatabaseEmpty = true;
+		} else {
+			isDatabaseEmpty = false;
+		}
+	}
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="h-screen">
+	{#if isDatabaseEmpty}
+		<Welcome />
+	{:else}
+		<p>add entry screen</p>
+	{/if}
+</div>
