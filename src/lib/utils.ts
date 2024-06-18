@@ -60,3 +60,15 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
+
+export function scrollIntoView(target: HTMLAnchorElement) {
+	const hrefString = target.getAttribute('href');
+	
+	if (hrefString) {
+		const el = document.querySelector(hrefString);
+		if (!el) return;
+		el.scrollIntoView({
+			behavior: 'smooth',
+		});
+	}
+}

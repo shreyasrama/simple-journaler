@@ -1,10 +1,8 @@
 <script lang="ts">
-	import Welcome from '$lib/components/Welcome/Welcome.svelte';
+	import Welcome from '$lib/components/welcome/welcome.svelte';
 
 	import { db } from '$lib/db';
 	import { migrator } from '$lib/db';
-
-	let isDatabaseEmpty: boolean;
 
 	init();
 
@@ -18,17 +16,21 @@
 			.execute();
 
 		if (res[0].count == 0) {
-			isDatabaseEmpty = true;
+			return true;
 		} else {
-			isDatabaseEmpty = false;
+			return false;
 		}
 	}
 </script>
 
 <div class="h-screen">
-	{#if isDatabaseEmpty}
-		<Welcome />
-	{:else}
-		<p>add entry screen</p>
-	{/if}
+    {#await init()}
+        <p>Loading...</p>
+    {:then isDatabaseEmpty} 
+        {#if isDatabaseEmpty}
+            <Welcome />
+        {:else}
+            <p>add entry screen</p>
+        {/if}
+    {/await}
 </div>
