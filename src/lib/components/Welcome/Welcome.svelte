@@ -3,7 +3,7 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { scrollIntoView } from '$lib/utils';
-    import { insertNewUser } from '$lib/db';
+    import { insertNewUser, insertNewEntry } from '$lib/db/db-functions';
     import Faq from '$lib/components/welcome/faq.svelte';
 
     let faqAnchor: HTMLAnchorElement;

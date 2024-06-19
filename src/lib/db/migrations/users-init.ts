@@ -1,4 +1,4 @@
-import type { Kysely, Migration } from 'kysely';
+import { type Kysely, type Migration } from 'kysely';
 
 export const UsersInit: Migration = {
     async up(db: Kysely<any>) {
@@ -6,7 +6,7 @@ export const UsersInit: Migration = {
             .createTable('users')
             .addColumn('id', 'uuid', (cb) => cb.primaryKey())
             .addColumn('username', 'varchar(25)', (cb) => cb.notNull())
-            .execute()
+            .execute();
     },
     async down(db: Kysely<any>) {
         await db.schema.dropTable('users').execute();

@@ -1,13 +1,22 @@
 <script lang="ts">
 	import Welcome from '$lib/components/welcome/welcome.svelte';
+    import Entry from '$lib/components/app/entry.svelte'
 
-	import { db } from '$lib/db';
-	import { migrator } from '$lib/db';
+	import { db } from '$lib/db/db-init';
+	import { migrator } from '$lib/db/db-init';
 
 	init();
 
 	async function init() {
-		await migrator.migrateToLatest();
+		const { error, results } = await migrator.migrateToLatest()
+
+		results?.forEach((it) => {
+		if (it.status === 'Success') {
+			console.log(`migration "${it.migrationName}" was executed successfully`)
+		} else if (it.status === 'Error') {
+			console.error(`failed to execute migration "${it.migrationName}"`)
+		}
+		})
 
 		// check if db is empty
 		const res = await db
@@ -26,11 +35,11 @@
 <div class="h-screen">
     {#await init()}
         <p>Loading...</p>
-    {:then isDatabaseEmpty} 
+    {:then isDatabaseEmpty}
         {#if isDatabaseEmpty}
             <Welcome />
         {:else}
-            <p>add entry screen</p>
+            <Entry />
         {/if}
     {/await}
 </div>
