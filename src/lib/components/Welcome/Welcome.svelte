@@ -1,13 +1,26 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button/index.js';
+    import LoaderCircle from "lucide-svelte/icons/loader-circle";
+    
+    import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { scrollIntoView } from '$lib/utils';
-    import { insertNewUser, insertNewEntry } from '$lib/db/db-functions';
+    import { insertNewUser } from '$lib/db/db-functions';
     import Faq from '$lib/components/welcome/faq.svelte';
 
     let faqAnchor: HTMLAnchorElement;
     let nameInput: string;
+
+    function handleGetStarted() {
+        document.getElementById('get-started-btn')?.toggleAttribute('disabled');
+        document.getElementById('loader-circle')?.classList.remove('hidden');
+
+        insertNewUser(nameInput);
+
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    }
 </script>
 
 <div class="h-screen px-4 pt-4 flex flex-col">
@@ -28,7 +41,10 @@
     <div class="flex w-full max-w-sm flex-col gap-1.5 mt-6">
         <Label class="text-xl" for="name">Enter a name</Label>
         <Input bind:value={nameInput} type="name" id="name" placeholder="Name" />
-        <Button on:click={() => insertNewUser(nameInput)}>Get started</Button>
+        <Button on:click={() => handleGetStarted()} id="get-started-btn">
+            <LoaderCircle id="loader-circle" class="mr-2 h-4 w-4 animate-spin hidden"/>
+            Get started
+        </Button>
     </div>
 </div>
 

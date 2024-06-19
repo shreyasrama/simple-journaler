@@ -22,9 +22,20 @@ export async function getUser() {
 	if (user) { return user; }
 }
 
-export async function insertNewEntry(detail: string) {
+export async function insertNewEntries(details: {}[]) {
 	const res = await db
 		.insertInto('entries')
-		.values({detail: detail})
+		.values(details)
 		.execute();
+}
+
+export async function getEntriesOnDay(date: string) {
+	const res = await db
+		.selectFrom('entries')
+		.selectAll()
+		.where('created_at', '>', date+' 00:00:00')
+		.where('created_at', '<', date+' 23:59:59')
+		.execute();
+
+	return res;
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Welcome from '$lib/components/welcome/welcome.svelte';
-    import Entry from '$lib/components/app/entry.svelte'
+    import Home from '$lib/components/app/home.svelte';
 
 	import { db } from '$lib/db/db-init';
 	import { migrator } from '$lib/db/db-init';
@@ -10,13 +10,15 @@
 	async function init() {
 		const { error, results } = await migrator.migrateToLatest()
 
-		results?.forEach((it) => {
-		if (it.status === 'Success') {
-			console.log(`migration "${it.migrationName}" was executed successfully`)
-		} else if (it.status === 'Error') {
-			console.error(`failed to execute migration "${it.migrationName}"`)
-		}
-		})
+		//console.log(error);
+
+		// results?.forEach((it) => {
+		// if (it.status === 'Success') {
+		// 	console.log(`migration "${it.migrationName}" was executed successfully`)
+		// } else if (it.status === 'Error') {
+		// 	console.error(`failed to execute migration "${it.migrationName}"`)
+		// }
+		// })
 
 		// check if db is empty
 		const res = await db
@@ -39,7 +41,7 @@
         {#if isDatabaseEmpty}
             <Welcome />
         {:else}
-            <Entry />
+            <Home />
         {/if}
     {/await}
 </div>

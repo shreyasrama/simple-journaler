@@ -1,36 +1,28 @@
 <script lang="ts">
-    import { Separator } from "$lib/components/ui/separator";
     import { Button } from '$lib/components/ui/button';
-
-    import { getUser } from "$lib/db/db-functions";
+    import { getUser, insertNewEntries } from "$lib/db/db-functions";
 	import { EntryInput } from "$lib/components/ui/entry-input";
-	import { fade } from "svelte/transition";
 
+	import { fade } from "svelte/transition";
 
     const date = new Date();
     const day = date.toLocaleDateString('en-US', {weekday: 'long'});
     const dayNum = date.getDate();
     const month = date.toLocaleDateString('en-US', {month: 'long'});
 
-    let detailList = [''];
-    let detailInput = '';
+    let detailList: {detail: string}[] = [];
+    let detailInput: string = '';
 
     function handleEnter(event: KeyboardEvent) {
         if (event.key === 'Enter') {
-            detailList = [...detailList, detailInput]
+            detailList = [...detailList, {detail: detailInput}]
         }
     }
+
+    function handleSave() {
+        insertNewEntries(detailList);
+    }
 </script>
-   
-<div>
-    <div class="flex h-5 items-center space-x-4 text-sm">
-        <div>Calendar</div>
-        <Separator orientation="vertical" />
-        <div>Add an entry</div>
-        <Separator orientation="vertical" />
-        <div>Search</div>
-    </div>
-</div>
 
 {#await getUser()}
     <p>Loading...</p>
@@ -52,10 +44,14 @@
 
 <EntryInput bind:value={detailInput} on:keyup={handleEnter} type="email" placeholder="Walked the dog" class="max-w-xs" autofocus/>
 
-<ul class="list-none">
-    {#each detailList as detail}
-        <li transition:fade={{ delay: 250, duration: 300 }}>{detail}</li>
-    {/each}
+<ul class="list-none my-6 ml-6 [&>li]:mt-2">
+    {#if detailList && detailList.length > 0}
+        {#each detailList as detail}
+            <li transition:fade={{ delay: 250, duration: 300 }}>{detail.detail}</li>
+        {/each}
+    {/if}
 </ul>
 
-<Button on:click={() => {}}>Save</Button>
+<Button on:click={() => {handleSave()}}>Save</Button>
+
+
