@@ -39,3 +39,13 @@ export async function getEntriesOnDay(date: string) {
 
 	return res;
 }
+
+export async function searchEntries(search: string) {
+	const res = await db
+		.selectFrom('entries')
+		.selectAll()
+		.where('detail', 'like', '%'+search+'%')
+		.execute()
+
+	return res;
+}

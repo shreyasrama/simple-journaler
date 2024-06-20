@@ -5,8 +5,9 @@
     import { CalendarIcon, NotebookPenIcon, SearchIcon, SettingsIcon } from "lucide-svelte";
 	import DayView from "$lib/components/calendar/day-view.svelte";
 	import Entry from "$lib/components/entry/entry.svelte";
+	import Search from "$lib/components/search/search.svelte";
     
-    let selectedPage = '';
+    let selectedPage = 'entry';
 
     function selectPage(page: string) {
         selectedPage = page;
@@ -19,7 +20,7 @@
         <Separator orientation="vertical" />
         <Button on:click={() => selectPage('entry')} variant="ghost"><NotebookPenIcon /></Button>
         <Separator orientation="vertical" />
-        <Button variant="ghost"><SearchIcon /></Button>
+        <Button on:click={() => selectPage('search')} variant="ghost"><SearchIcon /></Button>
         <Separator orientation="vertical" />
         <Button variant="ghost"><SettingsIcon /></Button>
     </div>
@@ -30,5 +31,7 @@
         <DayView />
     {:else if selectedPage == 'entry'}
         <Entry />
+    {:else if selectedPage == 'search'}
+        <Search />
     {/if}
 {/key}

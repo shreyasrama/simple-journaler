@@ -16,11 +16,15 @@
     function handleEnter(event: KeyboardEvent) {
         if (event.key === 'Enter') {
             detailList = [...detailList, {detail: detailInput}]
+            detailInput = '';
         }
     }
 
     function handleSave() {
         insertNewEntries(detailList);
+
+        // add a toast
+        // go to view entry screen
     }
 </script>
 
