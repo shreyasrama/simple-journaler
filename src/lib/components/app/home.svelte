@@ -6,6 +6,7 @@
 	import DayView from "$lib/components/calendar/day-view.svelte";
 	import Entry from "$lib/components/entry/entry.svelte";
 	import Search from "$lib/components/search/search.svelte";
+    import Settings from "$lib/components/settings/settings.svelte";
     
     let selectedPage = 'entry';
 
@@ -22,7 +23,7 @@
         <Separator orientation="vertical" />
         <Button on:click={() => selectPage('search')} variant="ghost"><SearchIcon /></Button>
         <Separator orientation="vertical" />
-        <Button variant="ghost"><SettingsIcon /></Button>
+        <Button on:click={() => selectPage('settings')} variant="ghost"><SettingsIcon /></Button>
     </div>
 </div>
 
@@ -33,5 +34,7 @@
         <Entry />
     {:else if selectedPage == 'search'}
         <Search />
+    {:else if selectedPage == 'settings'}
+        <Settings />
     {/if}
 {/key}
