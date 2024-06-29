@@ -78,7 +78,7 @@
             </Select.Group>
         </Select.Content>
         <Select.Input name="year" />
-    </Select.Root>    
+    </Select.Root>
 </div>
 
 {#await getEntriesOnDay(year+'-'+month+'-'+day)}

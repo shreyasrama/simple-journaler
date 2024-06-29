@@ -1,8 +1,9 @@
 <script lang="ts">
+    import { CalendarIcon, NotebookPenIcon, SearchIcon, SettingsIcon } from "lucide-svelte";
+    
 	import { Separator } from "$lib/components/ui/separator";
     import { Button } from "$lib/components/ui/button";
 
-    import { CalendarIcon, NotebookPenIcon, SearchIcon, SettingsIcon } from "lucide-svelte";
 	import DayView from "$lib/components/calendar/day-view.svelte";
 	import Entry from "$lib/components/entry/entry.svelte";
 	import Search from "$lib/components/search/search.svelte";
@@ -16,7 +17,7 @@
 </script>
 
 <div>
-    <div class="flex h-5 items-center space-x-4 text-sm">
+    <div class="flex h-5 items-center space-x-4 text-sm py-8 px-4 justify-center">
         <Button on:click={() => selectPage('calendar')} variant="ghost"><CalendarIcon /></Button>
         <Separator orientation="vertical" />
         <Button on:click={() => selectPage('entry')} variant="ghost"><NotebookPenIcon /></Button>

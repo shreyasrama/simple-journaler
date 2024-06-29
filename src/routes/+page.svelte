@@ -34,7 +34,7 @@
 	}
 </script>
 
-<div class="h-screen">
+<div class="h-screen px-4">
     {#await init()}
         <p>Loading...</p>
     {:then isDatabaseEmpty}

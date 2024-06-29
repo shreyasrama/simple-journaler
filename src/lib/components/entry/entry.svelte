@@ -2,6 +2,8 @@
     import { Button } from '$lib/components/ui/button';
     import { getUser, insertNewEntries } from "$lib/db/db-functions";
 	import { EntryInput } from "$lib/components/ui/entry-input";
+    
+    import { toast } from "svelte-sonner";
 
 	import { fade } from "svelte/transition";
 
@@ -15,16 +17,15 @@
 
     function handleEnter(event: KeyboardEvent) {
         if (event.key === 'Enter') {
+            insertNewEntries(detailList);
+
+            //check error
+            
+            toast('Added "' + detailInput + '"');
+
             detailList = [...detailList, {detail: detailInput}]
             detailInput = '';
         }
-    }
-
-    function handleSave() {
-        insertNewEntries(detailList);
-
-        // add a toast
-        // go to view entry screen
     }
 </script>
 
@@ -34,28 +35,40 @@
     <p>Hello, { user?.username }</p>
 {/await}
 
-<h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
-    Today is
-</h2>
+<div class="flex flex-col items-center">
+    <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
+        Today is
+    </h2>
+    
+    <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight py-4 lg:text-5xl">
+        {day}, {month} {dayNum}
+    </h1>
+    
+    <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors first:mt-0">
+        What did you get done today?
+    </h2>
 
-<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-    {day}, {month} {dayNum}
-</h1>
+    <EntryInput 
+        bind:value={detailInput} 
+        on:keyup={handleEnter} 
+        type="email" 
+        placeholder="Press Enter to apply..." 
+        class="max-w-xs mt-8 placeholder:italic"
+        autofocus
+    />
 
-<h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors first:mt-0">
-    What did you get done today?
-</h2>
+    <ul class="list-none my-6 [&>li]:mt-2">
+        {#if detailList && detailList.length > 0}
+            {#each detailList as detail}
+                <li
+                    transition:fade={{ delay: 250, duration: 300 }}
+                    class="mb-4"
+                >
+                    {detail.detail}
+                </li>
+            {/each}
+        {/if}
+    </ul>
 
-<EntryInput bind:value={detailInput} on:keyup={handleEnter} type="email" placeholder="Walked the dog" class="max-w-xs" autofocus/>
-
-<ul class="list-none my-6 ml-6 [&>li]:mt-2">
-    {#if detailList && detailList.length > 0}
-        {#each detailList as detail}
-            <li transition:fade={{ delay: 250, duration: 300 }}>{detail.detail}</li>
-        {/each}
-    {/if}
-</ul>
-
-<Button on:click={() => {handleSave()}}>Save</Button>
-
-
+    <!-- <Button on:click={() => {handleSave()}} disabled={detailList.length > 0 ? false : true}>Save</Button> -->
+</div>

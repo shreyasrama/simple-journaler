@@ -32,6 +32,9 @@ importers:
       lucide-svelte:
         specifier: ^0.395.0
         version: 0.395.0(svelte@4.2.18)
+      mode-watcher:
+        specifier: ^0.3.1
+        version: 0.3.1(svelte@4.2.18)
       sqlocal:
         specifier: ^0.9.0
         version: 0.9.0(drizzle-orm@0.31.2(kysely@0.27.3))(kysely@0.27.3)
@@ -1302,6 +1305,11 @@ packages:
   mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
+
+  mode-watcher@0.3.1:
+    resolution: {integrity: sha512-inghSVSXpEENV0SHM98+AvjDmTOjh9EJIrJXMScK42GNkDm5QJL7a/nZQ8M8i8RK7loFHqsQKBKdlXfw5e5C4w==}
+    peerDependencies:
+      svelte: ^4.0.0 || ^5.0.0-next.1
 
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -3077,6 +3085,10 @@ snapshots:
   mkdirp@0.5.6:
     dependencies:
       minimist: 1.2.8
+
+  mode-watcher@0.3.1(svelte@4.2.18):
+    dependencies:
+      svelte: 4.2.18
 
   mri@1.2.0: {}
 
