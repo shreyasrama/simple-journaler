@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Button } from '$lib/components/ui/button';
-    import { getUser, insertNewEntries } from "$lib/db/db-functions";
+    import { getUser, insertNewEntry } from "$lib/db/db-functions";
 	import { EntryInput } from "$lib/components/ui/entry-input";
     
     import { toast } from "svelte-sonner";
@@ -17,7 +17,7 @@
 
     function handleEnter(event: KeyboardEvent) {
         if (event.key === 'Enter') {
-            insertNewEntries(detailList);
+            insertNewEntry(detailInput);
 
             //check error
             

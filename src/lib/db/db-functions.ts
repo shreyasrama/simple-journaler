@@ -22,10 +22,10 @@ export async function getUser() {
 	if (user) { return user; }
 }
 
-export async function insertNewEntries(details: {}[]) {
+export async function insertNewEntry(newEntry: any) {
 	const res = await db
 		.insertInto('entries')
-		.values(details)
+		.values({detail: newEntry})
 		.execute();
 }
 
