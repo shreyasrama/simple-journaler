@@ -25,8 +25,22 @@ export async function getUser() {
 export async function insertNewEntry(newEntry: any) {
 	const res = await db
 		.insertInto('entries')
-		.values({detail: newEntry})
+		.values({
+			id: uuidv4(),
+			detail: newEntry
+		})
 		.execute();
+
+	return res;
+}
+
+export async function deleteEntry(entryId: string) {
+	const res = await db
+		.deleteFrom('entries')
+		.where('entries.id', '=', entryId)
+		.execute();
+
+	return res;
 }
 
 export async function getEntriesOnDay(date: string) {

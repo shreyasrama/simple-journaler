@@ -19,7 +19,7 @@
         if (event.key === 'Enter') {
             insertNewEntry(detailInput);
 
-            //check error
+            // todo: check error
             
             toast('Added "' + detailInput + '"');
 

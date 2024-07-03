@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { getEntriesOnDay } from "$lib/db/db-functions";
+	import { getEntriesOnDay, deleteEntry } from "$lib/db/db-functions";
+	import { Mouse } from "lucide-svelte";
+	import { toast } from "svelte-sonner";
 
     const months = [
         {value: '01', label: 'January'},
@@ -25,6 +27,21 @@
     let selectedMonth: any = date.toLocaleDateString('en-US', {month: '2-digit'});
     let selectedDay: any = date.toLocaleDateString('en-US', {day: 'numeric'});
     let selectedYear: any = date.toLocaleDateString('en-US', {year: 'numeric'});
+
+    function handleDelete(id: string, event: MouseEvent) {
+        deleteEntry(id);
+        toast("Deleted entry.");
+
+        // todo: check error
+
+        if (event instanceof MouseEvent) {
+            let spanElem = event.target;
+
+            if (spanElem instanceof HTMLSpanElement) {
+                spanElem.parentElement?.remove();
+            }
+        }
+    }
 </script>
 
 <div class="flex flex-row">
@@ -72,7 +89,9 @@
 {:then entries}
     <ul>
         {#each entries as entry}
-            <li>{entry.detail}</li>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <li><span on:click={(event) => handleDelete(entry.id, event)}>❌ </span>{entry.detail}</li>
         {/each}
     </ul>
 {/await}

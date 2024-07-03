@@ -20,7 +20,7 @@
 		// }
 		// })
 
-		// check if db is empty
+		// Check if db is empty
 		const res = await db
 			.selectFrom('users')
 			.select([(b) => b.fn.count('users.id').as('count')])
