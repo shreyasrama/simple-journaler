@@ -57,7 +57,7 @@
         bind:this={faqAnchor}
         on:click|preventDefault={() => scrollIntoView(faqAnchor)}
         class=""
-        >FAQs</a
+        >SimpleJournaler FAQs</a
     >
 </h4>
 

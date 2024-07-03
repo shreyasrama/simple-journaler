@@ -5,6 +5,7 @@
     import { Label } from "$lib/components/ui/label";
     import { AlertCircle } from "lucide-svelte";
     import * as Alert from "$lib/components/ui/alert";
+	import Faq from "$lib/components/welcome/faq.svelte";
 
     export const { getDatabaseFile } = new SQLocal('database.sqlite3');
     export const { overwriteDatabaseFile } = new SQLocal('database.sqlite3');
@@ -52,3 +53,9 @@
 </h2>
 <p class="text-sm text-muted-foreground">Save a database file to your current device if you're planning on using SimpleJournaler on another device.</p>
 <Button on:click={() => exportDatabase()}>Export database</Button>
+
+<!-- FAQs -->
+<h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 mt-12">
+    SimpleJournaler FAQs
+</h2>
+<Faq />
