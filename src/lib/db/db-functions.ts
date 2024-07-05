@@ -54,6 +54,17 @@ export async function getEntriesOnDay(date: string) {
 	return res;
 }
 
+export async function getEntriesForMonth(month: string, year: string) {
+	const res = await db
+		.selectFrom('entries')
+		.selectAll()
+		.where('created_at', '>', year+'-'+month+'-01')
+		.where('created_at', '<', year+'-'+month+'-31')
+		.execute();
+	
+	return res;
+}
+
 export async function searchEntries(search: string) {
 	const res = await db
 		.selectFrom('entries')

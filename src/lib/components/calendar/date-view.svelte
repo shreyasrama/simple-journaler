@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { getEntriesOnDay, deleteEntry } from "$lib/db/db-functions";
-	import { Mouse } from "lucide-svelte";
+	import { deleteEntry, getEntriesForMonth } from "$lib/db/db-functions";
 	import { toast } from "svelte-sonner";
 
     const months = [
@@ -25,7 +24,6 @@
     const date = new Date();
 
     let selectedMonth: any = date.toLocaleDateString('en-US', {month: '2-digit'});
-    let selectedDay: any = date.toLocaleDateString('en-US', {day: 'numeric'});
     let selectedYear: any = date.toLocaleDateString('en-US', {year: 'numeric'});
 
     function handleDelete(id: string, event: MouseEvent) {
@@ -41,6 +39,16 @@
                 spanElem.parentElement?.remove();
             }
         }
+    }
+
+    function convertDate(isoDate: string) {
+        const d = new Date(isoDate);
+
+        const day = d.toLocaleDateString('en-US', {day: 'numeric'});
+        const month = d.toLocaleDateString('en-US', {month: 'long'});
+        const year = d.toLocaleDateString('en-US', {year: 'numeric'});
+
+        return month+' '+day+', '+year;
     }
 </script>
 
@@ -58,19 +66,6 @@
         {/each}
     </select>
 
-    <select 
-        bind:value={selectedDay} 
-        on:change={(event) => {
-                if (event.target instanceof HTMLSelectElement)
-                selectedDay = event.target.value.toString();
-            }
-        }
-    >
-        {#each days as day}
-            <option value="{day.toString()}">{day.toString()}</option>
-        {/each}
-    </select>
-
     <select
         placeholder="blah"
         bind:value={selectedYear} 
@@ -84,11 +79,12 @@
     </select>
 </div>
 
-{#await getEntriesOnDay(selectedYear+'-'+selectedMonth+'-'+(selectedDay.length == 1 ? '0'+selectedDay : selectedDay))}
+{#await getEntriesForMonth(selectedMonth, selectedYear)}
     <p>Loading...</p>
 {:then entries}
     <ul>
         {#each entries as entry}
+            <h2>{convertDate(entry.created_at)}</h2>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-no-static-element-interactions -->
             <li><span on:click={(event) => handleDelete(entry.id, event)}>❌ </span>{entry.detail}</li>
