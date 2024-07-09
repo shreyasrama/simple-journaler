@@ -4,7 +4,7 @@
 	import { Separator } from "$lib/components/ui/separator";
     import { Button } from "$lib/components/ui/button";
 
-	import DayView from "$lib/components/calendar/date-view.svelte";
+	import DateView from "$lib/components/calendar/date-view.svelte";
 	import Entry from "$lib/components/entry/entry.svelte";
 	import Search from "$lib/components/search/search.svelte";
     import Settings from "$lib/components/settings/settings.svelte";
@@ -30,7 +30,7 @@
 
 {#key selectedPage}
     {#if selectedPage == 'calendar'}
-        <DayView />
+        <DateView />
     {:else if selectedPage == 'entry'}
         <Entry />
     {:else if selectedPage == 'search'}

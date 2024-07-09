@@ -31,7 +31,7 @@
         </Accordion.Item>
 
         <Accordion.Item value="item-4">
-            <Accordion.Trigger>Will you implement a sync feature?</Accordion.Trigger>
+            <Accordion.Trigger>Will you add syncing?</Accordion.Trigger>
             <Accordion.Content>
                 Potentially. A sync feature would require data to be stored externally to your device and some method
                 of authentication (e.g. a login) to retrieve your data, complicating what was once simple. A Google

@@ -43,17 +43,6 @@ export async function deleteEntry(entryId: string) {
 	return res;
 }
 
-export async function getEntriesOnDay(date: string) {
-	const res = await db
-		.selectFrom('entries')
-		.selectAll()
-		.where('created_at', '>', date+' 00:00:00')
-		.where('created_at', '<', date+' 23:59:59')
-		.execute();
-
-	return res;
-}
-
 export async function getEntriesForMonth(month: string, year: string) {
 	const res = await db
 		.selectFrom('entries')
@@ -73,4 +62,31 @@ export async function searchEntries(search: string) {
 		.execute()
 
 	return res;
+}
+
+export async function getYearRange() {
+	const earliestYear = await db
+		.selectFrom('entries')
+		.select('entries.created_at as date')
+		.limit(1)
+		.orderBy('date', 'asc')
+		.executeTakeFirst();
+
+	const date1 = new Date(earliestYear?.date).toLocaleDateString('en-US', {year: 'numeric'});
+
+	const latestYear = await db
+		.selectFrom('entries')
+		.select('entries.created_at as date')
+		.limit(1)
+		.orderBy('date', 'desc')
+		.executeTakeFirst();
+
+	const date2 = new Date(latestYear?.date).toLocaleDateString('en-US', {year: 'numeric'});
+
+	let yearList = [];
+	for (let i = Number(date1); i <= Number(date2); i++) {
+		yearList.push(i)
+	}
+
+	return yearList.reverse()
 }

@@ -1,6 +1,13 @@
 <script lang="ts">
-	import { deleteEntry, getEntriesForMonth } from "$lib/db/db-functions";
+	import { deleteEntry, getYearRange, getEntriesForMonth } from "$lib/db/db-functions";
+
 	import { toast } from "svelte-sonner";
+    import LoaderCircle from "lucide-svelte/icons/loader-circle";
+
+    type Entries = {
+        displayDate: string,
+        details: string[]
+    }
 
     const months = [
         {value: '01', label: 'January'},
@@ -17,11 +24,8 @@
         {value: '12', label: 'December'}
     ]
 
-    const days = Array.from({length: 31}, (_, i) => i + 1);
-
-    //todo: work out oldest year
-
     const date = new Date();
+    let datesToShow = new Set<string>;
 
     let selectedMonth: any = date.toLocaleDateString('en-US', {month: '2-digit'});
     let selectedYear: any = date.toLocaleDateString('en-US', {year: 'numeric'});
@@ -41,23 +45,42 @@
         }
     }
 
-    function convertDate(isoDate: string) {
-        const d = new Date(isoDate);
+    function storeDate(storedDate: string) {
+        const d = new Date(storedDate+'+00:00')
 
         const day = d.toLocaleDateString('en-US', {day: 'numeric'});
         const month = d.toLocaleDateString('en-US', {month: 'long'});
         const year = d.toLocaleDateString('en-US', {year: 'numeric'});
+        
+        if (!datesToShow.has(month+' '+day+', '+year)) {
+            datesToShow.add(month+' '+day+', '+year);
 
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function convertDate(isoDate: string) {
+        const d = new Date(isoDate+'+00:00');
+
+        const day = d.toLocaleDateString('en-US', {day: 'numeric'});
+        const month = d.toLocaleDateString('en-US', {month: 'long'});
+        const year = d.toLocaleDateString('en-US', {year: 'numeric'});
+        
         return month+' '+day+', '+year;
     }
 </script>
 
-<div class="flex flex-row">
-    <select 
+<div class="flex flex-row justify-center gap-2">
+    <select
+        class="w-32 border"
         bind:value={selectedMonth} 
         on:change={(event) => {
-                if (event.target instanceof HTMLSelectElement)
-                selectedMonth = event.target.value
+                if (event.target instanceof HTMLSelectElement) {
+                    datesToShow.clear();
+                    selectedMonth = event.target.value;
+                }
             }
         }
     >
@@ -67,27 +90,47 @@
     </select>
 
     <select
-        placeholder="blah"
+        class="w-20 border"
         bind:value={selectedYear} 
         on:change={(event) => {
-                if (event.target instanceof HTMLSelectElement)
-                selectedYear = event.target.value
+                if (event.target instanceof HTMLSelectElement) {
+                    datesToShow.clear();
+                    selectedYear = event.target.value;
+                }
             }
         }
     >
-        <option value="2024">2024</option>
+        {#await getYearRange()}
+            <p>Loading...</p>
+        {:then years} 
+            {#each years as year}
+                <option value="{year.toString()}">{year.toString()}</option>
+            {/each}
+        {/await}
     </select>
 </div>
 
-{#await getEntriesForMonth(selectedMonth, selectedYear)}
-    <p>Loading...</p>
-{:then entries}
-    <ul>
-        {#each entries as entry}
-            <h2>{convertDate(entry.created_at)}</h2>
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <!-- svelte-ignore a11y-no-static-element-interactions -->
-            <li><span on:click={(event) => handleDelete(entry.id, event)}>❌ </span>{entry.detail}</li>
-        {/each}
-    </ul>
-{/await}
+<div class="w-80 mx-auto">
+    {#await getEntriesForMonth(selectedMonth, selectedYear)}
+        <LoaderCircle class="block mx-auto h-6 w-6 animate-spin" />
+    {:then entries}
+        <ul>
+            {#each entries as entry}
+                <div>
+                    {#if storeDate(entry.created_at) != false}
+                        <h2 
+                            class="scroll-m-20 text-2xl font-medium opacity-70 
+                            tracking-tight transition-colors pt-4 first:mt-0"
+                        >
+                            {convertDate(entry.created_at)}
+                        </h2>
+                    {/if}
+                    
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <!-- svelte-ignore a11y-no-static-element-interactions -->
+                    <li><span on:click={(event) => handleDelete(entry.id, event)}>❌ </span>{entry.detail}</li>
+                </div>
+            {/each}
+        </ul>
+    {/await}
+</div>
