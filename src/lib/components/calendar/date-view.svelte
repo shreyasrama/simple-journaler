@@ -4,11 +4,6 @@
 	import { toast } from "svelte-sonner";
     import LoaderCircle from "lucide-svelte/icons/loader-circle";
 
-    type Entries = {
-        displayDate: string,
-        details: string[]
-    }
-
     const months = [
         {value: '01', label: 'January'},
         {value: '02', label: 'February'},
@@ -24,9 +19,16 @@
         {value: '12', label: 'December'}
     ]
 
-    const date = new Date();
     let datesToShow = new Set<string>;
 
+    const dateFormat: Intl.DateTimeFormatOptions = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+    };
+
+    // Set initial values
+    const date = new Date();
     let selectedMonth: any = date.toLocaleDateString('en-US', {month: '2-digit'});
     let selectedYear: any = date.toLocaleDateString('en-US', {year: 'numeric'});
 
@@ -47,13 +49,9 @@
 
     function storeDate(storedDate: string) {
         const d = new Date(storedDate+'+00:00')
-
-        const day = d.toLocaleDateString('en-US', {day: 'numeric'});
-        const month = d.toLocaleDateString('en-US', {month: 'long'});
-        const year = d.toLocaleDateString('en-US', {year: 'numeric'});
         
-        if (!datesToShow.has(month+' '+day+', '+year)) {
-            datesToShow.add(month+' '+day+', '+year);
+        if (!datesToShow.has(d.toLocaleDateString('en-US', dateFormat))) {
+            datesToShow.add(d.toLocaleDateString('en-US', dateFormat));
 
             return true;
         } else {
@@ -63,12 +61,8 @@
 
     function convertDate(isoDate: string) {
         const d = new Date(isoDate+'+00:00');
-
-        const day = d.toLocaleDateString('en-US', {day: 'numeric'});
-        const month = d.toLocaleDateString('en-US', {month: 'long'});
-        const year = d.toLocaleDateString('en-US', {year: 'numeric'});
         
-        return month+' '+day+', '+year;
+        return d.toLocaleDateString('en-US', dateFormat);
     }
 </script>
 
