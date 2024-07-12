@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { Button } from '$lib/components/ui/button';
-    import { getUser, insertNewEntry } from "$lib/db/db-functions";
+    import { insertNewEntry } from "$lib/db/db-functions";
 	import { EntryInput } from "$lib/components/ui/entry-input";
     
     import { toast } from "svelte-sonner";
 
 	import { fade } from "svelte/transition";
+	import { Textarea } from "$lib/components/ui/textarea";
 
     const date = new Date();
     const day = date.toLocaleDateString('en-US', {weekday: 'long'});
@@ -27,13 +27,12 @@
             detailInput = '';
         }
     }
-</script>
 
-{#await getUser()}
-    <p>Loading...</p>
-{:then user}
-    <p>Hello, { user?.username }</p>
-{/await}
+    document.querySelector('textarea')?.addEventListener("input", function(){
+        this.style.height = '0px';
+        this.style.height = this.scrollHeight + 'px';
+    })
+</script>
 
 <div class="flex flex-col items-center">
     <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
@@ -48,14 +47,21 @@
         What did you get done today?
     </h2>
 
-    <EntryInput 
+    <!-- <EntryInput 
         bind:value={detailInput} 
-        on:keyup={handleEnter} 
-        type="email" 
+        on:keyup={handleEnter}
         placeholder="Press Enter to apply..." 
         class="max-w-xs mt-8 placeholder:italic"
         autofocus
-    />
+    /> -->
+
+    <Textarea
+        bind:value={detailInput} 
+        on:keyup={handleEnter}
+        placeholder="Press Enter to apply..."
+        class="resize-none border-none text-center min-h-80 max-w-xs mt-8 placeholder:italic focus:!ring-transparent"
+        autofocus
+      />
 
     <ul class="list-none my-6 [&>li]:mt-2">
         {#if detailList && detailList.length > 0}

@@ -8,5 +8,7 @@
     }
 </script>
 
-<p>{detail.detail}</p>
-<p>{formatDate(detail.created_at)}</p>
+<div class="py-4 mx-10">
+    <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">{detail.detail}</h4>
+    <p>{formatDate(detail.created_at)}</p>
+</div>

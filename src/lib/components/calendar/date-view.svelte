@@ -106,7 +106,7 @@
 
 <div class="w-80 mx-auto">
     {#await getEntriesForMonth(selectedMonth, selectedYear)}
-        <LoaderCircle class="block mx-auto h-6 w-6 animate-spin" />
+        <LoaderCircle class="block mx-auto my-4 h-6 w-6 animate-spin" />
     {:then entries}
         <ul>
             {#each entries as entry}
