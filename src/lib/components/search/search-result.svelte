@@ -1,8 +1,15 @@
 <script lang="ts">
     export let detail;
 
+    const dateFormat: Intl.DateTimeFormatOptions = {
+        day: "numeric",
+        weekday: "short",
+        month: "short",
+        year: "numeric"
+    };
+
     function formatDate(date: Date) {
-        const dateString = new Date(date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+        const dateString = new Date(date+'+00:00').toLocaleDateString('en-US', dateFormat);
 
         return dateString;
     }

@@ -109,7 +109,7 @@
     </select>
 </div>
 
-<div class="w-80 mx-auto">
+<div class="w-80 mx-auto md:w-96 lg:w-1/2">
     {#await getEntriesForMonth(selectedMonth, selectedYear)}
         <LoaderCircle class="block mx-auto my-4 h-6 w-6 animate-spin" />
     {:then entries}
