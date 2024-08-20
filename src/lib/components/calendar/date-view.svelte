@@ -32,12 +32,14 @@
     let selectedMonth: any = date.toLocaleDateString('en-US', {month: '2-digit'});
     let selectedYear: any = date.toLocaleDateString('en-US', {year: 'numeric'});
 
+    // Handle deleting an entry when the ❌ is clicked
     function handleDelete(id: string, event: MouseEvent) {
         deleteEntry(id);
         toast("Deleted entry.");
 
         // todo: check error
 
+        // Remove element from list
         if (event instanceof MouseEvent) {
             let spanElem = event.target;
 
@@ -47,6 +49,8 @@
         }
     }
 
+    // Used to determine whether a date should be shown (in order to avoid
+    // showing the same date for entries from the same day)
     function storeDate(storedDate: string) {
         const d = new Date(storedDate+'+00:00')
         
@@ -59,6 +63,7 @@
         }
     }
 
+    // Converts the database date to a human-friendly one
     function convertDate(isoDate: string) {
         const d = new Date(isoDate+'+00:00');
         
@@ -122,7 +127,15 @@
                     
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <li><span on:click={(event) => handleDelete(entry.id, event)}>❌ </span>{entry.detail}</li>
+                    <li>
+                        <span 
+                            on:click={(event) => handleDelete(entry.id, event)}
+                            class="cursor-pointer"
+                        >
+                        ❌ 
+                        </span>
+                        {entry.detail}
+                    </li>
                 </div>
             {/each}
         </ul>
