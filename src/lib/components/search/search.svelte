@@ -6,17 +6,22 @@
     let searchString = '';
 </script>
 
-<Command.Root>
-    <Command.Input bind:value={searchString} placeholder="Search for an entry..." />
-
-    {#if searchString.length > 2}
-        {#await searchEntries(searchString)}
-            <p>Loading...</p>
-        {:then results}
-            {#each results as result}
-                <SearchResult detail={result}/>
-            {/each}
-        {/await}
-    {/if}
-
-</Command.Root>
+<div class="w-80 mx-auto md:w-1/2">
+    <Command.Root>
+        <Command.Input 
+            bind:value={searchString} 
+            placeholder="Search for an entry..." 
+        />
+    
+        {#if searchString.length > 2}
+            {#await searchEntries(searchString)}
+                <p>Loading...</p>
+            {:then results}
+                {#each results as result}
+                    <SearchResult detail={result}/>
+                {/each}
+            {/await}
+        {/if}
+    
+    </Command.Root>
+</div>

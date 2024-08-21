@@ -31,31 +31,41 @@
     }
 </script>
 
-<h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 mt-12">
-    Import database
-</h2>
+<div class="w-full mx-auto md:w-4/5">
+    <!-- Import -->
+    <div class="max-w-3xl mx-auto pb-16">
+        <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 mt-12">
+            Import database
+        </h2>
 
-<!-- Import -->
-<Alert.Root>
-    <AlertCircle class="h-5 w-5" />
-    <Alert.Title>Warning</Alert.Title>
-    <Alert.Description class="text-muted-foreground">
-        Ensure you only import a database that you exported from SimpleJournaler. Or things might break.
-    </Alert.Description>
-</Alert.Root>
-<Label for="import">Select your SimpleJournaler database</Label>
-<Input id="import" type="file" bind:value={file} />
-<Button on:click={() => handleImport(document.querySelector('input[type="file"]'))} disabled={file == undefined ? true : false}>Import</Button>
-
-<!-- Export -->
-<h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 mt-12">
-    Export database
-</h2>
-<p class="text-sm text-muted-foreground">Save a database file to your current device if you're planning on using SimpleJournaler on another device.</p>
-<Button on:click={() => exportDatabase()}>Export database</Button>
-
-<!-- FAQs -->
-<h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 mt-12">
-    SimpleJournaler FAQs
-</h2>
-<Faq />
+        <Alert.Root>
+            <AlertCircle class="h-5 w-5" />
+            <Alert.Title>Warning</Alert.Title>
+            <Alert.Description class="text-muted-foreground">
+                Ensure you only import a database that you exported from SimpleJournaler. Or things might break.
+            </Alert.Description>
+        </Alert.Root>
+        <div class="mt-4">
+            <Label for="import">Select your SimpleJournaler database</Label>
+            <Input id="import" type="file" bind:value={file} />
+        </div>
+        
+        <Button class="mt-2" on:click={() => handleImport(document.querySelector('input[type="file"]'))} disabled={file == undefined ? true : false}>Import</Button>
+    </div>
+    
+    <!-- Export -->
+    <div class="max-w-3xl mx-auto pb-16">
+        <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 mt-12">
+            Export database
+        </h2>
+        <p class="text-sm text-muted-foreground">Save a database file to your current device if you're planning on using SimpleJournaler on another device.</p>
+        <Button class="mt-2" on:click={() => exportDatabase()}>Export database</Button>
+    </div>
+    
+    
+    <!-- FAQs -->
+    <h2 class="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+        SimpleJournaler FAQs
+    </h2>
+    <Faq />
+</div>

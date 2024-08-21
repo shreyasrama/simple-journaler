@@ -3,7 +3,7 @@
 </script>
 
 <div class="h-screen">
-    <Accordion.Root class="w-full sm:max-w-[70%]">
+    <Accordion.Root class="w-full mx-auto">
         <Accordion.Item value="item-1">
             <Accordion.Trigger>Where is my data saved?</Accordion.Trigger>
             <Accordion.Content>
