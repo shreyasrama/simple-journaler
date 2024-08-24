@@ -54,6 +54,18 @@ export async function getEntriesForMonth(month: string, year: string) {
 	return res;
 }
 
+export async function getEntriesForToday() {
+	const today = new Date().toISOString().slice(0, 10);
+
+	const res = await db
+		.selectFrom('entries')
+		.selectAll()
+		.where('created_at', '>=', today)
+		.execute();
+
+	return res;
+}
+
 export async function searchEntries(search: string) {
 	const res = await db
 		.selectFrom('entries')

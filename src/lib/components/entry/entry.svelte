@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { insertNewEntry } from "$lib/db/db-functions";
-	import { EntryInput } from "$lib/components/ui/entry-input";
+    import { getEntriesForToday, insertNewEntry } from "$lib/db/db-functions";
     
     import { toast } from "svelte-sonner";
+    import LoaderCircle from "lucide-svelte/icons/loader-circle";
 
 	import { fade } from "svelte/transition";
 	import { Textarea } from "$lib/components/ui/textarea";
@@ -47,34 +47,39 @@
         What did you get done today?
     </h2>
 
-    <!-- <EntryInput 
-        bind:value={detailInput} 
-        on:keyup={handleEnter}
-        placeholder="Press Enter to apply..." 
-        class="max-w-xs mt-8 placeholder:italic"
-        autofocus
-    /> -->
-
     <Textarea
         bind:value={detailInput} 
         on:keyup={handleEnter}
         placeholder="Press Enter to apply..."
-        class="resize-none border-none text-center min-h-80 max-w-xs mt-8 placeholder:italic focus:!ring-transparent"
+        class="resize-none border-none text-center min-h-40 max-w-xs mt-8 placeholder:italic focus:!ring-transparent"
         autofocus
       />
+        
+        
+    {#await getEntriesForToday()}
+        <LoaderCircle class="block mx-auto my-4 h-6 w-6 animate-spin" />
+    {:then entries}
+        <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
+            Earlier today
+        </h2>
 
-    <ul class="list-none my-6 [&>li]:mt-2">
-        {#if detailList && detailList.length > 0}
-            {#each detailList as detail}
+        <ul class="list-none my-6 text-center [&>li]:mt-2">
+            {#each entries as entry}
                 <li
                     transition:fade={{ delay: 250, duration: 300 }}
                     class="mb-4"
                 >
-                    {detail.detail}
+                    {entry.detail}
+                </li>                 
+            {/each}
+            {#each  detailList as detail}
+                <li
+                transition:fade={{ delay: 250, duration: 300 }}
+                class="mb-4"
+            >
+                {detail.detail} 
                 </li>
             {/each}
-        {/if}
-    </ul>
-
-    <!-- <Button on:click={() => {handleSave()}} disabled={detailList.length > 0 ? false : true}>Save</Button> -->
+        </ul>
+    {/await}
 </div>
