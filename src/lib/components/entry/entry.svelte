@@ -16,7 +16,7 @@
     let detailInput: string = '';
 
     function handleEnter(event: KeyboardEvent) {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && /\d|[A-z]/.test(detailInput)) {
             insertNewEntry(detailInput);
 
             // todo: check error
