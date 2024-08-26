@@ -59,27 +59,29 @@
     {#await getEntriesForToday()}
         <LoaderCircle class="block mx-auto my-4 h-6 w-6 animate-spin" />
     {:then entries}
-        <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
-            Earlier today
-        </h2>
+        {#if entries.length > 0 || detailList.length > 0}
+            <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
+                Earlier today
+            </h2>
 
-        <ul class="list-none my-6 text-center [&>li]:mt-2">
-            {#each entries as entry}
-                <li
+            <ul class="list-none my-6 text-center [&>li]:mt-2">
+                {#each entries as entry}
+                    <li
+                        transition:fade={{ delay: 250, duration: 300 }}
+                        class="mb-4"
+                    >
+                        {entry.detail}
+                    </li>                 
+                {/each}
+                {#each  detailList as detail}
+                    <li
                     transition:fade={{ delay: 250, duration: 300 }}
                     class="mb-4"
                 >
-                    {entry.detail}
-                </li>                 
-            {/each}
-            {#each  detailList as detail}
-                <li
-                transition:fade={{ delay: 250, duration: 300 }}
-                class="mb-4"
-            >
-                {detail.detail} 
-                </li>
-            {/each}
-        </ul>
+                    {detail.detail} 
+                    </li>
+                {/each}
+            </ul>
+        {/if}
     {/await}
 </div>
