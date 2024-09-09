@@ -38,6 +38,9 @@ importers:
       sqlocal:
         specifier: ^0.11.1
         version: 0.11.1(drizzle-orm@0.31.2(kysely@0.27.4))(kysely@0.27.4)
+      svelte-gestures:
+        specifier: ^5.0.4
+        version: 5.0.4
       svelte-sonner:
         specifier: ^0.3.27
         version: 0.3.27(svelte@4.2.18)
@@ -1882,6 +1885,9 @@ packages:
       svelte:
         optional: true
 
+  svelte-gestures@5.0.4:
+    resolution: {integrity: sha512-a6cnR46AfFZ8zZyvA38A1wBLBFI7rYuAWQnmv3yYgSdbaJK/U7JG34rSkjMCePRvf4BETJSDfMNngLs5zEAfbw==}
+
   svelte-hmr@0.16.0:
     resolution: {integrity: sha512-Gyc7cOS3VJzLlfj7wKS0ZnzDVdv3Pn2IuVeJPk9m2skfhcu5bq3wtIZyQGggr7/Iim5rH5cncyQft/kRLupcnA==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
@@ -3708,6 +3714,8 @@ snapshots:
       postcss-scss: 4.0.9(postcss@8.4.41)
     optionalDependencies:
       svelte: 4.2.18
+
+  svelte-gestures@5.0.4: {}
 
   svelte-hmr@0.16.0(svelte@4.2.18):
     dependencies:
