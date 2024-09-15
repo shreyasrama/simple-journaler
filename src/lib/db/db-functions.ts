@@ -34,6 +34,19 @@ export async function insertNewEntry(newEntry: any) {
 	return res;
 }
 
+export async function insertNewEntryOnDay(newEntry: any, date: string) {
+	const res = await db
+		.insertInto('entries')
+		.values({
+			id: uuidv4(),
+			created_at: date + ' 00:00:00',
+			detail: newEntry
+		})
+		.execute();
+
+	return res;
+}
+
 export async function deleteEntry(entryId: string) {
 	const res = await db
 		.deleteFrom('entries')
@@ -43,12 +56,24 @@ export async function deleteEntry(entryId: string) {
 	return res;
 }
 
+export async function getEntriesForDay(day: string) {
+	const res = await db
+		.selectFrom('entries')
+		.selectAll()
+		.where('created_at', '>=', day + ' 00:00:00')
+		.where('created_at', '<=', day + ' 23:59:59')
+		.execute();
+
+	return res;
+}
+
 export async function getEntriesForMonth(month: string, year: string) {
 	const res = await db
 		.selectFrom('entries')
 		.selectAll()
-		.where('created_at', '>', year+'-'+month+'-01')
-		.where('created_at', '<', year+'-'+month+'-31')
+		.where('created_at', '>=', year+'-'+month+'-01')
+		.where('created_at', '<=', year+'-'+month+'-31')
+		.orderBy('created_at', 'asc')
 		.execute();
 	
 	return res;

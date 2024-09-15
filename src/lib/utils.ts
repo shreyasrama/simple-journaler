@@ -72,3 +72,13 @@ export function scrollIntoView(target: HTMLAnchorElement) {
 		});
 	}
 }
+
+export function convertIsoDateToDatabaseDate(dateToConvert: Date) {
+	const day = dateToConvert.toLocaleDateString('en-US', {weekday: 'long'}); // 'Sunday'
+	const month = dateToConvert.toLocaleDateString('en-US', {month: 'long'}); // 'September'
+	const dayNum = dateToConvert.getDate(); // 15
+	const year = dateToConvert.getFullYear() // 2024
+	const monthNum = ('0' + (dateToConvert.getMonth()+1)).slice(-2); // 09
+
+	return year + '-' + monthNum + '-' + dayNum;
+}

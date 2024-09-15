@@ -1,96 +1,33 @@
 <script lang="ts">
-    import { getEntriesForToday, insertNewEntry } from "$lib/db/db-functions";
-    import { Textarea } from "$lib/components/ui/textarea";
-    
-    import { swipe, type SwipeCustomEvent } from 'svelte-gestures';
-    import { toast } from "svelte-sonner";
-    import LoaderCircle from "lucide-svelte/icons/loader-circle";
+    import EntryDisplay from "./entry-display.svelte";
 
-	import { fade } from "svelte/transition";
+    import { swipe, type SwipeCustomEvent, type SwipePointerEventDetail } from 'svelte-gestures';
 
-    const date = new Date();
-    const day = date.toLocaleDateString('en-US', {weekday: 'long'});
-    const dayNum = date.getDate();
-    const month = date.toLocaleDateString('en-US', {month: 'long'});
-
-    let detailList: {detail: string}[] = [];
-    let detailInput: string = '';
-
-    let direction;
-
-    function handleEnter(event: KeyboardEvent) {
-        if (event.key === 'Enter' && /\d|[A-z]/.test(detailInput)) {
-            insertNewEntry(detailInput);
-
-            // todo: check error
-            
-            toast('Added "' + detailInput + '"');
-
-            detailList = [...detailList, {detail: detailInput}]
-            detailInput = '';
-        }
-    }
+    let date = new Date();
 
     function handleSwipe(event: SwipeCustomEvent) {
-        //
+        modifyDate(date, event.detail);
     }
 
-    document.querySelector('textarea')?.addEventListener("input", function(){
-        this.style.height = '0px';
-        this.style.height = this.scrollHeight + 'px';
-    })
+    // Based on swipe direction will increment or decrement the date
+    function modifyDate(dateToModify: Date, swipeEvent: SwipePointerEventDetail) {
+        if (swipeEvent.direction == 'right') {
+            dateToModify.setDate(dateToModify.getDate() - 1);
+
+            date = dateToModify;
+        }
+        else if (swipeEvent.direction == 'left') {
+            if (dateToModify.toDateString() !== new Date().toDateString()) {
+                dateToModify.setDate(dateToModify.getDate() + 1);
+
+                date = dateToModify;
+            }
+        }
+    }
 </script>
 
-<div class="w-full h-full" use:swipe={{ timeframe: 300, minSwipeDistance: 100 }} on:swipe={handleSwipe}>
-    <div class="flex flex-col items-center">
-        <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
-            Today is
-        </h2>
-        
-        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight py-4 lg:text-5xl">
-            {day}, {month} {dayNum}
-        </h1>
-        
-        <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors first:mt-0">
-            What did you get done today?
-        </h2>
-    
-        <Textarea
-            bind:value={detailInput} 
-            on:keyup={handleEnter}
-            placeholder="Press Enter to apply..."
-            class="resize-none border-none text-center min-h-40 max-w-xs mt-8 placeholder:italic focus:!ring-transparent"
-            autofocus
-          />
-            
-            
-        {#await getEntriesForToday()}
-            <LoaderCircle class="block mx-auto my-4 h-6 w-6 animate-spin" />
-        {:then entries}
-            {#if entries.length > 0 || detailList.length > 0}
-                <h2 class="scroll-m-20 text-3xl font-medium opacity-70 tracking-tight transition-colors mt-12 first:mt-0 ">
-                    Earlier today
-                </h2>
-    
-                <ul class="list-none my-6 text-center [&>li]:mt-2">
-                    {#each entries as entry}
-                        <li
-                            transition:fade={{ delay: 250, duration: 300 }}
-                            class="mb-4"
-                        >
-                            {entry.detail}
-                        </li>                 
-                    {/each}
-                    {#each  detailList as detail}
-                        <li
-                        transition:fade={{ delay: 250, duration: 300 }}
-                        class="mb-4"
-                    >
-                        {detail.detail} 
-                        </li>
-                    {/each}
-                </ul>
-            {/if}
-        {/await}
-    </div>
+<div class="w-full h-full" use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }} on:swipe={handleSwipe}>
+    {#key date}
+        <EntryDisplay date={date}/>
+    {/key}
 </div>
