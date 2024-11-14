@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Welcome from '$lib/components/welcome/welcome.svelte';
-    import Home from '$lib/components/app/home.svelte';
+	import Home from '$lib/components/app/home.svelte';
 
 	import { db } from '$lib/db/db-init';
 	import { migrator } from '$lib/db/db-init';
@@ -8,7 +8,7 @@
 	init();
 
 	async function init() {
-		const { error, results } = await migrator.migrateToLatest()
+		const { error, results } = await migrator.migrateToLatest();
 
 		//console.log(error);
 
@@ -34,14 +34,14 @@
 	}
 </script>
 
-<div class="h-screen px-4">
-    {#await init()}
-        <p>Loading...</p>
-    {:then isDatabaseEmpty}
-        {#if isDatabaseEmpty}
-            <Welcome />
-        {:else}
-            <Home />
-        {/if}
-    {/await}
+<div class="mx-auto h-screen w-full max-w-[50rem] px-4">
+	{#await init()}
+		<p>Loading...</p>
+	{:then isDatabaseEmpty}
+		{#if isDatabaseEmpty}
+			<Welcome />
+		{:else}
+			<Home />
+		{/if}
+	{/await}
 </div>

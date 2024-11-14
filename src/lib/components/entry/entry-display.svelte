@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Textarea } from "$lib/components/ui/textarea";
+    import { Textarea } from "$lib/components/ui/textarea";
 
     import { getEntriesForDay, insertNewEntry, insertNewEntryOnDay } from "$lib/db/db-functions";
     import { convertIsoDateToDatabaseDate } from "$lib/utils";
