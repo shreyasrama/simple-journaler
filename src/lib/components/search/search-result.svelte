@@ -2,20 +2,20 @@
     export let detail;
 
     const dateFormat: Intl.DateTimeFormatOptions = {
-        day: "numeric",
-        weekday: "short",
-        month: "short",
-        year: "numeric"
+        day: 'numeric',
+        weekday: 'short',
+        month: 'short',
+        year: 'numeric'
     };
 
     function formatDate(date: Date) {
-        const dateString = new Date(date+'+00:00').toLocaleDateString('en-US', dateFormat);
+        const dateString = new Date(date + '+00:00').toLocaleDateString('en-US', dateFormat);
 
         return dateString;
     }
 </script>
 
-<div class="py-4 mx-10">
+<div class="mx-10 py-4">
     <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">{detail.detail}</h4>
     <p>{formatDate(detail.created_at)}</p>
 </div>

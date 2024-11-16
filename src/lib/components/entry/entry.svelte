@@ -1,5 +1,5 @@
 <script lang="ts">
-    import EntryDisplay from "./entry-display.svelte";
+    import EntryDisplay from './entry-display.svelte';
 
     import { swipe, type SwipeCustomEvent, type SwipePointerEventDetail } from 'svelte-gestures';
 
@@ -15,8 +15,7 @@
             dateToModify.setDate(dateToModify.getDate() - 1);
 
             date = dateToModify;
-        }
-        else if (swipeEvent.direction == 'left') {
+        } else if (swipeEvent.direction == 'left') {
             if (dateToModify.toDateString() !== new Date().toDateString()) {
                 dateToModify.setDate(dateToModify.getDate() + 1);
 
@@ -26,8 +25,12 @@
     }
 </script>
 
-<div class="w-full h-full" use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }} on:swipe={handleSwipe}>
+<div
+    class="h-full w-full"
+    use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }}
+    on:swipe={handleSwipe}
+>
     {#key date}
-        <EntryDisplay date={date}/>
+        <EntryDisplay {date} />
     {/key}
 </div>

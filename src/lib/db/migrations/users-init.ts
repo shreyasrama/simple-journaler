@@ -1,5 +1,10 @@
 import { type Kysely, type Migration } from 'kysely';
 
+export type UsersTable = {
+    id: string;
+    username: string;
+};
+
 export const UsersInit: Migration = {
     async up(db: Kysely<any>) {
         await db.schema
@@ -11,4 +16,4 @@ export const UsersInit: Migration = {
     async down(db: Kysely<any>) {
         await db.schema.dropTable('users').execute();
     }
-}
+};

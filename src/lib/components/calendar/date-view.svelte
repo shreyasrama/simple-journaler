@@ -1,142 +1,83 @@
 <script lang="ts">
-	import { deleteEntry, getYearRange, getEntriesForMonth } from "$lib/db/db-functions";
+    import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
-	import { toast } from "svelte-sonner";
-    import LoaderCircle from "lucide-svelte/icons/loader-circle";
+    import { getYearRange } from '$lib/db/db-functions';
+    import { deleteEntryFromDatabase } from '$lib/services/entry';
+    import { months, entryDates, createEntriesByDate } from '$lib/utils/date';
 
-    const months = [
-        {value: '01', label: 'January'},
-        {value: '02', label: 'February'},
-        {value: '03', label: 'March'},
-        {value: '04', label: 'April'},
-        {value: '05', label: 'May'},
-        {value: '06', label: 'June'},
-        {value: '07', label: 'July'},
-        {value: '08', label: 'August'},
-        {value: '09', label: 'September'},
-        {value: '10', label: 'October'},
-        {value: '11', label: 'November'},
-        {value: '12', label: 'December'}
-    ]
+    import EntryByDate from './entry-by-date.svelte';
 
-    let datesToShow = new Set<string>;
-
-    const dateFormat: Intl.DateTimeFormatOptions = {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-    };
+    // Event dispatching for a delete from a child component
+    interface EntryDeleteEvent {
+        id: string;
+        mouseEvent: MouseEvent;
+    }
 
     // Set initial values
     const date = new Date();
-    let selectedMonth: any = date.toLocaleDateString('en-US', {month: '2-digit'});
-    let selectedYear: any = date.toLocaleDateString('en-US', {year: 'numeric'});
+    let selectedMonth: any = date.toLocaleDateString('en-US', { month: '2-digit' });
+    let selectedYear: any = date.toLocaleDateString('en-US', { year: 'numeric' });
 
     // Handle deleting an entry when the ❌ is clicked
-    function handleDelete(id: string, event: MouseEvent) {
-        deleteEntry(id);
-        toast("Deleted entry.");
+    async function handleDelete(data: EntryDeleteEvent) {
+        const isDeleted = await deleteEntryFromDatabase(data.id);
 
-        // todo: check error
+        if (isDeleted) {
+            // Remove element from list
+            if (data.mouseEvent instanceof MouseEvent) {
+                let spanElem = data.mouseEvent.target;
 
-        // Remove element from list
-        if (event instanceof MouseEvent) {
-            let spanElem = event.target;
-
-            if (spanElem instanceof HTMLSpanElement) {
-                spanElem.parentElement?.remove();
+                if (spanElem instanceof HTMLSpanElement) {
+                    spanElem.parentElement?.remove();
+                }
             }
         }
-    }
-
-    // Used to determine whether a date should be shown (in order to avoid
-    // showing the same date for entries from the same day)
-    function storeDate(storedDate: string) {
-        const d = new Date(storedDate+'+00:00')
-        
-        if (!datesToShow.has(d.toLocaleDateString('en-US', dateFormat))) {
-            datesToShow.add(d.toLocaleDateString('en-US', dateFormat));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    // Converts the database date to a human-friendly one
-    function convertDate(isoDate: string) {
-        const d = new Date(isoDate+'+00:00');
-        
-        return d.toLocaleDateString('en-US', dateFormat);
     }
 </script>
 
 <div class="flex flex-row justify-center gap-2">
     <select
         class="w-32 border"
-        bind:value={selectedMonth} 
+        bind:value={selectedMonth}
         on:change={(event) => {
-                if (event.target instanceof HTMLSelectElement) {
-                    datesToShow.clear();
-                    selectedMonth = event.target.value;
-                }
+            if (event.target instanceof HTMLSelectElement) {
+                entryDates.clear();
+                selectedMonth = event.target.value;
             }
-        }
+        }}
     >
         {#each months as month}
-            <option value="{month.value}">{month.label}</option>
+            <option value={month.value}>{month.label}</option>
         {/each}
     </select>
 
     <select
         class="w-20 border"
-        bind:value={selectedYear} 
+        bind:value={selectedYear}
         on:change={(event) => {
-                if (event.target instanceof HTMLSelectElement) {
-                    datesToShow.clear();
-                    selectedYear = event.target.value;
-                }
+            if (event.target instanceof HTMLSelectElement) {
+                entryDates.clear();
+                selectedYear = event.target.value;
             }
-        }
+        }}
     >
         {#await getYearRange()}
             <p>Loading...</p>
-        {:then years} 
+        {:then years}
             {#each years as year}
-                <option value="{year.toString()}">{year.toString()}</option>
+                <option value={year.toString()}>{year.toString()}</option>
             {/each}
         {/await}
     </select>
 </div>
 
-<div class="w-80 mx-auto md:w-96 lg:w-1/2">
-    {#await getEntriesForMonth(selectedMonth, selectedYear)}
-        <LoaderCircle class="block mx-auto my-4 h-6 w-6 animate-spin" />
-    {:then entries}
+<div class="mx-auto w-80 md:w-96 lg:w-1/2">
+    {#await createEntriesByDate(selectedMonth, selectedYear)}
+        <LoaderCircle class="mx-auto my-4 block h-6 w-6 animate-spin" />
+    {:then entriesMap}
         <ul>
-            {#each entries as entry}
-                <div>
-                    {#if storeDate(entry.created_at) != false}
-                        <h2 
-                            class="scroll-m-20 text-2xl font-medium opacity-70 
-                            tracking-tight transition-colors pt-4 first:mt-0"
-                        >
-                            {convertDate(entry.created_at)}
-                        </h2>
-                    {/if}
-                    
-                    <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <!-- svelte-ignore a11y-no-static-element-interactions -->
-                    <li>
-                        <span 
-                            on:click={(event) => handleDelete(entry.id, event)}
-                            class="cursor-pointer"
-                        >
-                        ❌ 
-                        </span>
-                        {entry.detail}
-                    </li>
-                </div>
+            {#each entriesMap.entries() as [k, v]}
+                <EntryByDate date={k} entries={v} on:delete={(e) => handleDelete(e.detail)} />
             {/each}
         </ul>
     {/await}

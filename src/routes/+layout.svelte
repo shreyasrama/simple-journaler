@@ -1,10 +1,10 @@
 <script>
-	import '../app.css';
+    import '../app.css';
 
-	import { Toaster } from "$lib/components/ui/sonner";
+    import { Toaster } from '$lib/components/ui/sonner';
 </script>
 
-<Toaster theme="light"/>
+<Toaster theme="light" />
 
 <slot></slot>
 

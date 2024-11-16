@@ -1,4 +1,10 @@
-import { type Kysely, type Migration, sql } from 'kysely';
+import { type Kysely, type Migration, type Generated, sql } from 'kysely';
+
+export type EntriesTable = {
+    id: string;
+    created_at: Generated<string>;
+    detail: string;
+};
 
 export const EntriesInit: Migration = {
     async up(db: Kysely<any>) {
@@ -12,4 +18,4 @@ export const EntriesInit: Migration = {
     async down(db: Kysely<any>) {
         await db.schema.dropTable('entries').execute();
     }
-}
+};

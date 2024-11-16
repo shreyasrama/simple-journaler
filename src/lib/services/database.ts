@@ -1,11 +1,24 @@
-
 import { SQLocal } from 'sqlocal';
+
 import { toast } from 'svelte-sonner';
 
 export const { getDatabaseFile, overwriteDatabaseFile } = new SQLocal('database.sqlite3');
 
 const ENTRIES_HASH = '82e81eff8fdb5188cbadaa4754e41b0adc3108568125a7f65fece0475d932f94';
 const USERS_HASH = 'd827049039f82a8b65a9b0f52e637cf3bc5d1e0dec7d6198edf901a5e3dcae7d';
+
+export async function exportDatabase() {
+    const databaseFile = await getDatabaseFile();
+    const fileUrl = URL.createObjectURL(databaseFile);
+
+    const a = document.createElement('a');
+    a.href = fileUrl;
+    a.download = 'SimpleJournalerDB.sqlite3';
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(fileUrl);
+}
 
 export async function importDatabase(file: HTMLInputElement) {
     if (!file.files || file.files.length === 0) {

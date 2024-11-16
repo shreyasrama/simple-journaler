@@ -1,9 +1,14 @@
 import { type Migration } from 'kysely';
 
-import { UsersInit } from "./users-init";
-import { EntriesInit } from './entries-init';
+import { UsersInit, type UsersTable } from './users-init';
+import { EntriesInit, type EntriesTable } from './entries-init';
 
 export const initMigrations: Record<string, Migration> = {
-    'users_init': UsersInit,
-    'entries_init': EntriesInit
+    users_init: UsersInit,
+    entries_init: EntriesInit
+};
+
+export type SimpleJournalerDatabase = {
+    users: UsersTable;
+    entries: EntriesTable;
 };
