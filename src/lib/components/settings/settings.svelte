@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { SQLocal } from 'sqlocal';
 	import { AlertCircle } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
@@ -9,10 +9,7 @@
 	import Faq from '$lib/components/welcome/faq.svelte';
 
 	import { importDatabase } from '$lib/db/import';
-	import { onMount } from 'svelte';
-
-	export const { getDatabaseFile } = new SQLocal('database.sqlite3');
-	export const { overwriteDatabaseFile } = new SQLocal('database.sqlite3');
+	import { exportDatabase } from '$lib/db/export';
 
 	let file: File;
 	let fileInput: HTMLInputElement;
@@ -23,22 +20,10 @@
 		fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
 	});
 
-	async function exportDatabase() {
-		const databaseFile = await getDatabaseFile();
-		const fileUrl = URL.createObjectURL(databaseFile);
-
-		const a = document.createElement('a');
-		a.href = fileUrl;
-		a.download = 'SimpleJournalerDB.sqlite3';
-		a.click();
-		a.remove();
-
-		URL.revokeObjectURL(fileUrl);
-	}
-
 	async function handleImportDatabase() {
-		importDatabase(fileInput);
+		await importDatabase(fileInput);
 
+		fileInput.value = '';
 		importButtonDisabled = true;
 	}
 </script>
