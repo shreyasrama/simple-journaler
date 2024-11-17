@@ -2,6 +2,7 @@
     import { Textarea } from '$lib/components/ui/textarea';
 
     import { getEntriesForDay, insertNewEntry, insertNewEntryOnDay } from '$lib/db/db-functions';
+    import { getEntriesForDayFromDatabase } from '$lib/services/entry';
     import { convertIsoDateToDatabaseDate } from '$lib/utils';
 
     import { toast } from 'svelte-sonner';
@@ -96,7 +97,7 @@
         autofocus
     />
 
-    {#await getEntriesForDay(databaseDate)}
+    {#await getEntriesForDayFromDatabase(databaseDate)}
         <LoaderCircle class="mx-auto my-4 block h-6 w-6 animate-spin" />
     {:then entries}
         {#if entries.length > 0 || detailList.length > 0}

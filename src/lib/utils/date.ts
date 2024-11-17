@@ -1,6 +1,3 @@
-import { getEntriesForMonth } from '$lib/db/db-functions';
-import type { Entry } from '$lib/models/types';
-
 export const months = [
     { value: '01', label: 'January' },
     { value: '02', label: 'February' },
@@ -16,16 +13,11 @@ export const months = [
     { value: '12', label: 'December' }
 ];
 
-// Initial values
-const date = new Date();
-let selectedMonth: any = date.toLocaleDateString('en-US', { month: '2-digit' });
-let selectedYear: any = date.toLocaleDateString('en-US', { year: 'numeric' });
-
 // Set of dates that have entries, used for grouping entries
 export let entryDates = new Set<string>();
 
 // Format for displaying entries under the dates
-// e.g. Sunday, September 4
+// e.g. Sunday, January 1
 const entryDateFormat: Intl.DateTimeFormatOptions = {
     weekday: 'long',
     day: 'numeric',
@@ -33,6 +25,8 @@ const entryDateFormat: Intl.DateTimeFormatOptions = {
 };
 
 // Converts the database date to a human-friendly one
+// Takes in: 2006-01-01 (no TZ)
+// Returns: Sunday, January 1
 export function convertDate(isoDate: string) {
     const d = new Date(isoDate + '+00:00');
 
@@ -51,19 +45,37 @@ export function addEntryDate(storedDate: string) {
     }
 }
 
-export async function createEntriesByDate(month: string, year: string) {
-    const entries = await getEntriesForMonth(month, year);
-    const entriesByDate = new Map<string, Entry[]>();
+// Helper function to calculate dates for day lookup
+// Takes in: a local date of the format 2006-01-01
+// Returns: the start and end of that day in UTC
+export function getDayBoundariesInUtc(inputDate: string): { startOfDayUtc: string; endOfDayUtc: string } {
+    // Parse the input date
+    const [year, month, day] = inputDate.split("-").map(Number);
 
-    for (const entry of entries) {
-        let convertedEntry = convertDate(entry.created_at);
+    // Create local dates
+    const localStartOfDay = new Date(year, month - 1, day, 0, 0, 0, 0);
+    const localEndOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
 
-        if (!entriesByDate.has(convertedEntry)) {
-            entriesByDate.set(convertedEntry, []);
-        }
+    // Convert both to UTC
+    const utcMidnight = new Date(localStartOfDay.toISOString());
+    const utcEndOfDay = new Date(localEndOfDay.toISOString());
 
-        entriesByDate.get(convertedEntry)?.push({ id: entry.id, detail: entry.detail });
-    }
+    return {
+        startOfDayUtc: formatDateToDatabaseUtc(utcMidnight),
+        endOfDayUtc: formatDateToDatabaseUtc(utcEndOfDay),
+    };
+}
 
-    return entriesByDate;
+// Helper function for formatting dates for database lookups
+// Takes in: a Date object
+// Returns: a string representing a UTC date in the format YYYY-MM-DD HH:MM:SS
+function formatDateToDatabaseUtc(date: Date): string {
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }

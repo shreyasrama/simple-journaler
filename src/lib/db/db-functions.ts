@@ -62,6 +62,17 @@ export async function getEntriesForDay(day: string) {
     return res;
 }
 
+export async function getEntriesInRange(start: string, end: string) {
+    const res = await db
+        .selectFrom('entries')
+        .selectAll()
+        .where('created_at', '>=', start)
+        .where('created_at', '<=', end)
+        .execute();
+
+    return res;
+}
+
 export async function getEntriesForMonth(month: string, year: string) {
     const res = await db
         .selectFrom('entries')

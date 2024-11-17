@@ -2,8 +2,8 @@
     import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
     import { getYearRange } from '$lib/db/db-functions';
-    import { deleteEntryFromDatabase } from '$lib/services/entry';
-    import { months, entryDates, createEntriesByDate } from '$lib/utils/date';
+    import { deleteEntryFromDatabase, createEntriesByDate } from '$lib/services/entry';
+    import { months, entryDates } from '$lib/utils/date';
 
     import EntryByDate from './entry-by-date.svelte';
 
