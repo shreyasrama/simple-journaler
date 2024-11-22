@@ -1,7 +1,7 @@
 <script lang="ts">
-    import EntryDisplay from './entry-display.svelte';
-
     import { swipe, type SwipeCustomEvent, type SwipePointerEventDetail } from 'svelte-gestures';
+
+    import EntryDisplay from './entry-display.svelte';
 
     let date = new Date();
 

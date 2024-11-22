@@ -2,7 +2,7 @@
     import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
     import { getYearRange } from '$lib/db/db-functions';
-    import { deleteEntryFromDatabase, createEntriesByDate } from '$lib/services/entry';
+    import { deleteEntryFromDb, createEntriesByDate } from '$lib/services/entry';
     import { months, entryDates } from '$lib/utils/date';
 
     import EntryByDate from './entry-by-date.svelte';
@@ -20,7 +20,7 @@
 
     // Handle deleting an entry when the ❌ is clicked
     async function handleDelete(data: EntryDeleteEvent) {
-        const isDeleted = await deleteEntryFromDatabase(data.id);
+        const isDeleted = await deleteEntryFromDb(data.id);
 
         if (isDeleted) {
             // Remove element from list

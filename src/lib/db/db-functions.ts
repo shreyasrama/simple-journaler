@@ -27,6 +27,7 @@ export async function insertNewEntry(newEntry: string) {
             id: uuidv4(),
             detail: newEntry
         })
+        .returning("id")
         .execute();
 
     return res;
@@ -40,6 +41,7 @@ export async function insertNewEntryOnDay(newEntry: any, date: string) {
             created_at: date + ' 00:00:00',
             detail: newEntry
         })
+        .returning("id")
         .execute();
 
     return res;

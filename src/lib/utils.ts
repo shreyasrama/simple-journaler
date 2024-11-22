@@ -70,14 +70,3 @@ export function scrollIntoView(target: HTMLAnchorElement) {
         });
     }
 }
-
-// Returns a date in the format 2006-01-06
-export function convertIsoDateToDatabaseDate(dateToConvert: Date) {
-    const day = dateToConvert.toLocaleDateString('en-US', { weekday: 'long' }); // 'Sunday'
-    const month = dateToConvert.toLocaleDateString('en-US', { month: 'long' }); // 'January'
-    const dayNum = dateToConvert.getDate(); // 1
-    const year = dateToConvert.getFullYear(); // 2006
-    const monthNum = ('0' + (dateToConvert.getMonth() + 1)).slice(-2); // 01
-
-    return year + '-' + monthNum + '-' + dayNum;
-}

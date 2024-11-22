@@ -1,11 +1,13 @@
 <script lang="ts">
     import { Textarea } from '$lib/components/ui/textarea';
 
-    import { getEntriesForDay, insertNewEntry, insertNewEntryOnDay } from '$lib/db/db-functions';
-    import { getEntriesForDayFromDatabase } from '$lib/services/entry';
-    import { convertIsoDateToDatabaseDate } from '$lib/utils';
+    import {
+        getEntriesForDayFromDb,
+        insertNewEntryIntoDb,
+        insertNewEntryOnDayIntoDb
+    } from '$lib/services/entry';
+    import { convertIsoDateToDatabaseDate } from '$lib/utils/date';
 
-    import { toast } from 'svelte-sonner';
     import LoaderCircle from 'lucide-svelte/icons/loader-circle';
     import { fade } from 'svelte/transition';
 
@@ -14,34 +16,34 @@
     const day = date.toLocaleDateString('en-US', { weekday: 'long' }); // 'Sunday'
     const month = date.toLocaleDateString('en-US', { month: 'long' }); // 'September'
     const dayNum = date.getDate(); // 15
-    const year = date.getFullYear(); // 2024
-    const monthNum = ('0' + (date.getMonth() + 1)).slice(-2); // 09
 
     let databaseDate = convertIsoDateToDatabaseDate(date); // 2024-09-15
 
     let detailList: { detail: string }[] = [];
     let detailInput: string = '';
 
-    function handleEnter(event: KeyboardEvent) {
+    // TODO: refactor out to service
+    async function handleEnter(event: KeyboardEvent) {
         if (event.key === 'Enter' && /\d|[A-z]/.test(detailInput)) {
+            let success = false;
+
             if (isToday()) {
-                insertNewEntry(detailInput);
+                success = await insertNewEntryIntoDb(detailInput);
             } else {
-                insertNewEntryOnDay(detailInput, databaseDate);
+                success = await insertNewEntryOnDayIntoDb(detailInput, databaseDate);
             }
 
-            // todo: check error
-
-            toast('Added "' + detailInput + '"');
-
-            detailList = [...detailList, { detail: detailInput }];
-            detailInput = '';
+            if (success) {
+                detailList = [...detailList, { detail: detailInput }];
+                detailInput = '';
+            }
         }
     }
 
     function isToday() {
         if (databaseDate == convertIsoDateToDatabaseDate(new Date())) return true;
-        else return false;
+
+        return false;
     }
 
     // Allow the textarea to scale with the text
@@ -97,7 +99,7 @@
         autofocus
     />
 
-    {#await getEntriesForDayFromDatabase(databaseDate)}
+    {#await getEntriesForDayFromDb(databaseDate)}
         <LoaderCircle class="mx-auto my-4 block h-6 w-6 animate-spin" />
     {:then entries}
         {#if entries.length > 0 || detailList.length > 0}
@@ -126,5 +128,5 @@
         {/if}
     {/await}
 
-    <!-- todo: add jump to today button and maybe refactor out today view and past view -->
+    <!-- TODO: add jump to today button and maybe refactor out today view and past view -->
 </div>
