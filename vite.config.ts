@@ -20,4 +20,7 @@ export default defineConfig({
     optimizeDeps: {
         exclude: ['sqlocal']
     },
+    server: {
+        port: 5175
+    }
 });
