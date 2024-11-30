@@ -96,6 +96,7 @@
         id="detailForm"
         placeholder="Press Enter to apply..."
         class="mt-8 min-h-40 max-w-xs resize-none border-none text-center placeholder:italic focus:!ring-transparent"
+        inputmode="none"
     />
 
     {#await getEntriesForDayFromDb(databaseDate)}
