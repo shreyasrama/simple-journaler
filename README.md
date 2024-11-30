@@ -1,38 +1,13 @@
-# create-svelte
+# simple-journaler
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A basic, browser-based journaling app designed to not store any data externally to your device and requires no login or account creation.
 
-## Creating a project
+It uses the following tech:
+- [Origin Private File System](https://web.dev/articles/origin-private-file-system)
+- [SQLocal](https://github.com/DallasHoff/sqlocal)
+- [Kysely](https://kysely.dev/)
 
-If you're seeing this, you've probably already done this step. Congrats!
+OPFS is a storage endpoint private to the origin of the page and therefore only works on one browser, on one device.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+SQLocal is an awesome-to-use TypeScript library that makes it easy to use SQLite with the OPFS. simple-journaler uses the
+Kysely driver for SQL query building.
