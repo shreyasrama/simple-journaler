@@ -22,6 +22,8 @@
     let detailList: { detail: string }[] = [];
     let detailInput: string = '';
 
+    const inputField = document.getElementById('detailInput') as HTMLInputElement;
+
     // TODO: refactor out to service
     async function handleEnter(event: KeyboardEvent) {
         if (event.key === 'Enter' && /\d|[A-z]/.test(detailInput)) {
@@ -36,6 +38,7 @@
             if (success) {
                 detailList = [...detailList, { detail: detailInput }];
                 detailInput = '';
+                inputField.blur();
             }
         }
     }
@@ -96,7 +99,6 @@
         id="detailForm"
         placeholder="Press Enter to apply..."
         class="mt-8 min-h-40 max-w-xs resize-none border-none text-center placeholder:italic focus:!ring-transparent"
-        inputmode="none"
     />
 
     {#await getEntriesForDayFromDb(databaseDate)}
