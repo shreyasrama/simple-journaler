@@ -36,6 +36,11 @@
             if (success) {
                 detailList = [...detailList, { detail: detailInput }];
                 detailInput = '';
+
+                const entryList = document.getElementById('entryList') as HTMLUListElement;
+                const inputField = document.getElementById('detailForm') as HTMLInputElement;
+                inputField.blur();
+                entryList.focus();
             }
         }
     }
@@ -112,7 +117,7 @@
                 {/if}
             </h2>
 
-            <ul class="my-6 list-none text-center [&>li]:mt-2">
+            <ul class="my-6 list-none text-center [&>li]:mt-2" id="entryList">
                 {#each entries as entry}
                     <li transition:fade={{ delay: 250, duration: 300 }} class="mb-4">
                         {entry.detail}
