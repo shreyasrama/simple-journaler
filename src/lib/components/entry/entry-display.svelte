@@ -37,7 +37,7 @@
                 detailList = [...detailList, { detail: detailInput }];
                 detailInput = '';
 
-                const entryList = document.getElementById('entryList') as HTMLInputElement;
+                const entryList = document.getElementById('entryList') as HTMLUListElement;
                 const inputField = document.getElementById('detailForm') as HTMLInputElement;
                 inputField.blur();
                 entryList.focus();
