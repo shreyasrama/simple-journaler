@@ -22,8 +22,6 @@
     let detailList: { detail: string }[] = [];
     let detailInput: string = '';
 
-    const inputField = document.getElementById('detailInput') as HTMLInputElement;
-
     // TODO: refactor out to service
     async function handleEnter(event: KeyboardEvent) {
         if (event.key === 'Enter' && /\d|[A-z]/.test(detailInput)) {
@@ -38,7 +36,11 @@
             if (success) {
                 detailList = [...detailList, { detail: detailInput }];
                 detailInput = '';
+
+                const entryList = document.getElementById('entryList') as HTMLInputElement;
+                const inputField = document.getElementById('detailForm') as HTMLInputElement;
                 inputField.blur();
+                entryList.focus();
             }
         }
     }
@@ -115,7 +117,7 @@
                 {/if}
             </h2>
 
-            <ul class="my-6 list-none text-center [&>li]:mt-2">
+            <ul class="my-6 list-none text-center [&>li]:mt-2" id="entryList">
                 {#each entries as entry}
                     <li transition:fade={{ delay: 250, duration: 300 }} class="mb-4">
                         {entry.detail}
