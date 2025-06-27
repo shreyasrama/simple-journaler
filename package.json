@@ -13,7 +13,6 @@
     },
     "devDependencies": {
         "@sveltejs/adapter-auto": "^3.2.4",
-        "@sveltejs/adapter-cloudflare": "^4.7.4",
         "@sveltejs/kit": "^2.5.24",
         "@sveltejs/vite-plugin-svelte": "^3.1.1",
         "@types/eslint": "^8.56.11",
@@ -38,6 +37,7 @@
     "type": "module",
     "dependencies": {
         "@internationalized/date": "^3.5.5",
+        "@sveltejs/adapter-node": "^5.2.12",
         "@types/node": "^20.16.1",
         "bits-ui": "^0.21.13",
         "clsx": "^2.1.1",
