@@ -1,8 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { db } from './db-init';
-
 export async function insertNewUser(username: string) {
+    const { db } = await import('./db-init');
     const res = await db
         .insertInto('users')
         .values({
@@ -13,6 +12,7 @@ export async function insertNewUser(username: string) {
 }
 
 export async function getUser() {
+    const { db } = await import('./db-init');
     const user = await db.selectFrom('users').select(['username']).limit(1).executeTakeFirst();
 
     if (user) {
@@ -21,6 +21,7 @@ export async function getUser() {
 }
 
 export async function insertNewEntry(newEntry: string) {
+    const { db } = await import('./db-init');
     const res = await db
         .insertInto('entries')
         .values({
@@ -34,6 +35,7 @@ export async function insertNewEntry(newEntry: string) {
 }
 
 export async function insertNewEntryOnDay(newEntry: any, date: string) {
+    const { db } = await import('./db-init');
     const res = await db
         .insertInto('entries')
         .values({
@@ -48,12 +50,14 @@ export async function insertNewEntryOnDay(newEntry: any, date: string) {
 }
 
 export async function deleteEntry(entryId: string) {
+    const { db } = await import('./db-init');
     const res = await db.deleteFrom('entries').where('entries.id', '=', entryId).executeTakeFirst();
 
     return res;
 }
 
 export async function getEntriesForDay(day: string) {
+    const { db } = await import('./db-init');
     const res = await db
         .selectFrom('entries')
         .selectAll()
@@ -65,6 +69,7 @@ export async function getEntriesForDay(day: string) {
 }
 
 export async function getEntriesInRange(start: string, end: string) {
+    const { db } = await import('./db-init');
     const res = await db
         .selectFrom('entries')
         .selectAll()
@@ -76,6 +81,7 @@ export async function getEntriesInRange(start: string, end: string) {
 }
 
 export async function getEntriesForMonth(month: string, year: string) {
+    const { db } = await import('./db-init');
     const res = await db
         .selectFrom('entries')
         .selectAll()
@@ -88,6 +94,7 @@ export async function getEntriesForMonth(month: string, year: string) {
 }
 
 export async function getEntriesForToday() {
+    const { db } = await import('./db-init');
     const today = new Date().toISOString().slice(0, 10);
 
     const res = await db
@@ -100,6 +107,7 @@ export async function getEntriesForToday() {
 }
 
 export async function searchEntries(search: string) {
+    const { db } = await import('./db-init');
     const res = await db
         .selectFrom('entries')
         .selectAll()
@@ -110,6 +118,7 @@ export async function searchEntries(search: string) {
 }
 
 export async function getYearRange() {
+    const { db } = await import('./db-init');
     const earliestYear = await db
         .selectFrom('entries')
         .select('entries.created_at as date')

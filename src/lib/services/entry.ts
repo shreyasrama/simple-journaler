@@ -1,4 +1,3 @@
-import { SQLocal } from 'sqlocal';
 import { toast } from 'svelte-sonner';
 
 import { deleteEntry, getEntriesForMonth, getEntriesInRange, insertNewEntry, insertNewEntryOnDay } from '$lib/db/db-functions';

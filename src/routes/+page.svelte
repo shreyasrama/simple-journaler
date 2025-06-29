@@ -1,47 +1,30 @@
 <script lang="ts">
     import Welcome from '$lib/components/welcome/welcome.svelte';
     import Home from '$lib/components/app/home.svelte';
+    import { onMount } from 'svelte';
 
-    import { db } from '$lib/db/db-init';
-    import { migrator } from '$lib/db/db-init';
+    let isDatabaseEmpty: boolean | null = null;
+    let loading = true;
 
-    init();
-
-    async function init() {
-        const { error, results } = await migrator.migrateToLatest();
-
-        //console.log(error);
-
-        // results?.forEach((it) => {
-        // if (it.status === 'Success') {
-        // 	console.log(`migration "${it.migrationName}" was executed successfully`)
-        // } else if (it.status === 'Error') {
-        // 	console.error(`failed to execute migration "${it.migrationName}"`)
-        // }
-        // })
-
-        // Check if db is empty
+    onMount(async () => {
+        // Dynamically import db and migrator so it only runs client-side
+        const { db, migrator } = await import('$lib/db/db-init');
+        await migrator.migrateToLatest();
         const res = await db
             .selectFrom('users')
             .select([(b) => b.fn.count('users.id').as('count')])
             .execute();
-
-        if (res[0].count == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+        isDatabaseEmpty = res[0].count == 0;
+        loading = false;
+    });
 </script>
 
 <div class="mx-auto h-screen w-full max-w-[50rem] px-4">
-    {#await init()}
+    {#if loading}
         <p>Loading...</p>
-    {:then isDatabaseEmpty}
-        {#if isDatabaseEmpty}
-            <Welcome />
-        {:else}
-            <Home />
-        {/if}
-    {/await}
+    {:else if isDatabaseEmpty}
+        <Welcome />
+    {:else}
+        <Home />
+    {/if}
 </div>
