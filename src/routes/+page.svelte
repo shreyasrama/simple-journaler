@@ -19,7 +19,7 @@
     });
 </script>
 
-<div class="mx-auto h-screen w-full max-w-[50rem] px-4">
+<div class="mx-auto h-screen w-full max-w-200 px-4">
     {#if loading}
         <p>Loading...</p>
     {:else if isDatabaseEmpty}

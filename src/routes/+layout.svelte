@@ -4,7 +4,7 @@
     import { Toaster } from '$lib/components/ui/sonner';
 </script>
 
-<Toaster theme="light" />
+<Toaster />
 
 <slot></slot>
 

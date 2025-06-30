@@ -27,8 +27,8 @@
 
 <div
     class="h-full w-full"
-    use:swipe={{ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }}
-    on:swipe={handleSwipe}
+    use:swipe={ () => ({ timeframe: 300, minSwipeDistance: 100, touchAction: 'pan-y' }) }
+    onswipe={handleSwipe}
 >
     {#key date}
         <EntryDisplay {date} />

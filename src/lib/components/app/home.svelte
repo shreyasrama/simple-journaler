@@ -18,13 +18,13 @@
 
 <div>
     <div class="flex h-5 items-center justify-center space-x-4 px-4 py-8 text-sm">
-        <Button on:click={() => selectPage('calendar')} variant="ghost"><CalendarIcon /></Button>
+        <Button onclick={() => selectPage('calendar')} variant="ghost"><CalendarIcon /></Button>
         <Separator orientation="vertical" />
-        <Button on:click={() => selectPage('entry')} variant="ghost"><NotebookPenIcon /></Button>
+        <Button onclick={() => selectPage('entry')} variant="ghost"><NotebookPenIcon /></Button>
         <Separator orientation="vertical" />
-        <Button on:click={() => selectPage('search')} variant="ghost"><SearchIcon /></Button>
+        <Button onclick={() => selectPage('search')} variant="ghost"><SearchIcon /></Button>
         <Separator orientation="vertical" />
-        <Button on:click={() => selectPage('settings')} variant="ghost"><SettingsIcon /></Button>
+        <Button onclick={() => selectPage('settings')} variant="ghost"><SettingsIcon /></Button>
     </div>
 </div>
 

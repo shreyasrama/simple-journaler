@@ -10,6 +10,5 @@ It uses the following tech behind the scenes:
 - [SQLocal](https://github.com/DallasHoff/sqlocal) - an awesome TypeScript library that makes it easy to use SQLite with the OPFS. Simple Journaler uses the [Kysely driver](https://kysely.dev/) for SQL query building.
 
 ## TODO
-[] Upgrade to Svelte 5
 [] Fix datepicker
 [] Use Lexical editor for entry

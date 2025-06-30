@@ -97,10 +97,10 @@
 
     <Textarea
         bind:value={detailInput}
-        on:keyup={handleEnter}
+        onkeyup={handleEnter}
         id="detailForm"
         placeholder="Press Enter to apply..."
-        class="mt-8 min-h-40 max-w-xs resize-none border-none text-center placeholder:italic focus:!ring-transparent"
+        class="mt-8 min-h-40 max-w-xs resize-none border-none text-center placeholder:italic focus:ring-transparent!"
     />
 
     {#await getEntriesForDayFromDb(databaseDate)}
@@ -129,6 +129,8 @@
                     </li>
                 {/each}
             </ul>
+        {:else}
+            <ul class="my-6 list-none text-center [&>li]:mt-2" id="entryList"></ul>
         {/if}
     {/await}
 
