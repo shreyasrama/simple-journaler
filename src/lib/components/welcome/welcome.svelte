@@ -1,10 +1,10 @@
 <script lang="ts">
     import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 
-    import { Button } from '$lib/components/ui/button/index.js';
-    import { Input } from '$lib/components/ui/input/index.js';
-    import { Label } from '$lib/components/ui/label/index.js';
-    import { scrollIntoView } from '$lib/utils';
+    import { Button } from '$lib/components/ui/button';
+    import { Input } from '$lib/components/ui/input';
+    import { Label } from '$lib/components/ui/label';
+    
     import { insertNewUser } from '$lib/db/db-functions';
     import Faq from '$lib/components/welcome/faq.svelte';
 
@@ -43,7 +43,7 @@
     <div class="mt-6 flex w-full max-w-sm flex-col gap-1.5">
         <Label class="text-xl" for="name">Enter a name</Label>
         <Input bind:value={nameInput} type="name" id="name" placeholder="Name" />
-        <Button on:click={() => handleGetStarted()} id="get-started-btn">
+        <Button onclick={() => handleGetStarted()} id="get-started-btn">
             <LoaderCircle id="loader-circle" class="mr-2 hidden h-4 w-4 animate-spin" />
             Get started
         </Button>
@@ -57,7 +57,7 @@
         href="#faq"
         id="faq"
         bind:this={faqAnchor}
-        on:click|preventDefault={() => scrollIntoView(faqAnchor)}
+        on:click|preventDefault={() => faqAnchor.scrollIntoView({ behavior: 'smooth' })}
         class="">SimpleJournaler FAQs</a
     >
 </h4>

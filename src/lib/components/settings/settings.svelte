@@ -50,7 +50,7 @@
             <Input id="import" type="file" accept=".sqlite3" bind:value={file} />
         </div>
 
-        <Button class="mt-2" on:click={() => handleImportDatabase()} disabled={importButtonDisabled}
+        <Button class="mt-2" onclick={() => handleImportDatabase()} disabled={importButtonDisabled}
             >Import</Button
         >
     </div>
@@ -66,7 +66,7 @@
             Save a database file to your current device if you're planning on using SimpleJournaler
             on another device.
         </p>
-        <Button class="mt-2" on:click={() => exportDatabase()}>Export database</Button>
+        <Button class="mt-2" onclick={() => exportDatabase()}>Export database</Button>
     </div>
 
     <!-- FAQs -->

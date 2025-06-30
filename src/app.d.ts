@@ -8,13 +8,6 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
-
-	namespace svelteHTML {
-		interface HTMLAttributes {
-			onswipe?: (event: CustomEvent<{ x: number; y: number }>) => void;
-			'on:swipe'?: (event: CustomEvent<{ x: number; y: number }>) => void;
-		}
-	}
 }
 
 export {};
