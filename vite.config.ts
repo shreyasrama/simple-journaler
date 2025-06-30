@@ -1,10 +1,11 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
+        tailwindcss(),
         sveltekit(),
-
         // Required for cross-origin isolation and origin private file system (OPFS)
         {
             name: 'configure-response-headers',
@@ -22,5 +23,8 @@ export default defineConfig({
     },
     server: {
         port: 5175
+    },
+    worker: {
+        format: 'es'
     }
 });
