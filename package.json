@@ -7,9 +7,6 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest run",
-    "format": "biome format",
-    "lint": "biome lint",
-    "check": "biome check",
     "deploy": "wrangler deploy"
   },
   "dependencies": {
@@ -28,7 +25,6 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.4",
     "@tanstack/devtools-vite": "^0.3.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
