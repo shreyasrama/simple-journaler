@@ -14,13 +14,23 @@ function HomeMessage() {
     );
     const db = drizzle(driver, batchDriver);
 
+    // TODO: get name
     const existingUser = await isInitialized(db);
     setIsNewUser(existingUser ? false : true);
   };
 
   initCheck();
 
-  return <div>{isNewUser ? "New user" : "Existing user"}</div>;
+  return isNewUser ? (
+    <div>
+      <h1>Welcome to SimpleJournaler</h1>
+      <h2>Fast and free. Completely private and stored in your browser.</h2>
+    </div>
+  ) : (
+    <div>
+      <h1>Welcome back (then redirect to /entry)</h1>
+    </div>
+  );
 }
 
 export default function Home() {

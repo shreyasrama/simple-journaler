@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+.root {
+    isolation: isolate;
+}
+
 body {
     @apply m-0;
     font-family:
@@ -13,4 +17,14 @@ body {
 code {
     font-family:
         source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+h1 {
+    font-size: var(--text-4xl);
+    font-weight: bold;
+}
+
+h2 {
+    font-size: var(--text-2xl);
+    font-weight: semibold;
 }
