@@ -5,7 +5,7 @@ import { CalendarSearch, NotebookPen, Settings } from "lucide-react";
 export default function TabBar() {
   return (
     <Tabs.Root defaultValue="entry">
-      <Tabs.List>
+      <Tabs.List className="flex flex-row justify-center gap-10 py-4">
         <Link to="/search">
           <Tabs.Tab value="calendar">
             <CalendarSearch />

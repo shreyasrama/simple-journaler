@@ -1,21 +1,38 @@
 import type { SqliteRemoteDatabase } from "drizzle-orm/sqlite-proxy";
 import { createClientOnlyFn } from "@tanstack/react-start";
-import { count, DrizzleQueryError } from "drizzle-orm";
+import { DrizzleQueryError, sql } from "drizzle-orm";
 
 import { users } from "./schema";
 
 export const isInitialized = createClientOnlyFn(
-  async (db: SqliteRemoteDatabase<Record<string, never>>): Promise<boolean> => {
+  async (
+    db: SqliteRemoteDatabase<Record<string, never>>,
+  ): Promise<string | null> => {
     try {
-      const data = await db.select({ count: count() }).from(users);
+      const user = await db.select().from(users).limit(1);
 
-      return data.length > 0;
+      return user[0].name;
     } catch (error) {
       if (error instanceof DrizzleQueryError) {
-        return false;
+        return null;
       }
     }
 
-    return false;
+    return null;
+  },
+);
+
+export const createTables = createClientOnlyFn(
+  async (db: SqliteRemoteDatabase<Record<string, never>>) => {
+    await db.run(sql`CREATE TABLE IF NOT EXISTS users (
+      id integer NOT NULL,
+      name text NOT NULL
+      )`);
+  },
+);
+
+export const insertUser = createClientOnlyFn(
+  async (db: SqliteRemoteDatabase<Record<string, never>>, name: string) => {
+    await db.insert(users).values({ id: 0, name: name });
   },
 );
