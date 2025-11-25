@@ -4,7 +4,7 @@ import { DrizzleQueryError, sql } from "drizzle-orm";
 
 import { users } from "./schema";
 
-export const isInitialized = createClientOnlyFn(
+export const getUsersName = createClientOnlyFn(
   async (
     db: SqliteRemoteDatabase<Record<string, never>>,
   ): Promise<string | null> => {
