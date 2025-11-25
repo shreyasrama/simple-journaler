@@ -12,6 +12,7 @@
   "dependencies": {
     "@base-ui-components/react": "1.0.0-beta.6",
     "@cloudflare/vite-plugin": "^1.13.8",
+    "@lexical/react": "^0.38.2",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-router": "^1.132.0",
@@ -20,6 +21,7 @@
     "@tanstack/react-start": "^1.132.0",
     "@tanstack/router-plugin": "^1.132.0",
     "drizzle-orm": "^0.44.7",
+    "lexical": "^0.38.2",
     "lucide-react": "^0.544.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
